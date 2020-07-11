@@ -1,0 +1,3564 @@
+\documentclass[french]{beamer}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath, amssymb}
+\usepackage{appendixnumberbeamer}
+\usepackage{babel}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc}
+\usepackage[absolute,overlay]{textpos} % Positionnement absolu du texte
+\usepackage{textcomp}
+%-------------------------------
+\DeclareUnicodeCharacter{00A0}{ } 	% éliminer les caractère espace non visible
+\usepackage{ragged2e}				% Pouvoir utiliser \justifying
+%\apptocmd{\frame}{}{\justifying}{} % Allow optional arguments after frame.
+
+\usepackage[cyr]{aeguill}
+%\usepackage[francais]{babel}
+\usepackage{subfigure}
+%\usepackage{epstopdf}
+%\usepackage[round]{natbib}%[round,authoryear]
+\usepackage{amsmath,amssymb}
+\usepackage{setspace}
+\usepackage[babel=true]{csquotes}
+\graphicspath{{Figures/}}
+\usepackage{wasysym}
+\usepackage{tabularx}
+\usepackage{psfrag}
+\usepackage{hyperref}
+\usepackage{appendixnumberbeamer}
+%\usepackage[bigfiles]{media9}
+\usepackage[overlay,absolute]{textpos}
+%\includeonlyframes{current}	% Complier qu'une seule frame; à mettre \begin{frame}[label=current]
+
+%CHOIX DU THEME et/ou DE SA COULEUR
+% => essayer différents thèmes (en décommantant une des trois lignes suivantes)
+%\usetheme{Luebeck}
+\usetheme{Warsaw}
+\useinnertheme{rectangles}
+%\usetheme{PaloAlto}
+%\usetheme{Madrid}
+%\usetheme{Copenhagen}
+%\usetheme{Szeged}
+
+
+%\definecolor{ThemeColor}{RGB}{50,100,50}
+\definecolor{ThemeColor}{RGB}{47, 142, 173} 
+
+\definecolor{vert}{RGB}{0,100,0}
+% => il est possible, pour un thème donné, de modifier seulement la couleur
+%\usecolortheme{crane}
+%\usecolortheme{wolverine}
+%\usecolortheme{seahorse}
+%\mode<presentation>
+%\usecolortheme{spruce}
+%\usecolortheme{beaver}
+\usecolortheme[named=ThemeColor]{structure}
+
+%\useoutertheme[left]{sidebar}
+%commandes%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+ %ne pas afficher les icones de navigation
+ %%%%%%%%%%%%%
+\newcommand*\oldmacro{}%
+\let\oldmacro\insertshorttitle%
+\renewcommand*\insertshorttitle{%
+	\oldmacro\hfill%
+	\insertframenumber\,/\,\inserttotalframenumber}
+%%pour inserer les numeros de pages
+\setbeamerfont{frametitle}{size=\small}
+
+%Pour le TITLEPAGE
+%%%%page de garde%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+  
+%Thèse de doctorat\\ 
+%\begin{center}
+%Thèse de doctorat
+%\end{center}
+%\vspace*{+0.5cm}
+\title[11 décembre 2018]{Conception et Commande Collaborative de Manipulateurs Mobiles Modulaires ($C^3M^3$)}
+%\vspace*{-0.7cm}
+\author[Zine Elabidine CHEBAB - Soutenance de thèse]{{\scriptsize Présentée par} :\\ M. Zine Elabidine CHEBAB}
+\date[11 décembre 2018 - SIGMA-Clermont]{11 décembre 2018 - SIGMA-Clermont}
+\institute[Sigma-Clermont]{{\tiny
+\vspace*{-0.7cm}
+\begin{center}
+Soutenance devant le jury composé de :\\
+\end{center}
+\begin{tabular}{lll}
+	M. Damien {\sc CHABLAT} 		& Directeur de recherche, LS2N (Nantes)					&Rapporteur \\
+	M. Said {\sc ZEGHLOUL} 			& Professeur des universités, Pprime (Poitiers)			&Rapporteur  \\
+	M. Olivier {\sc COMPANY} 		& Maître de conférences, LIRMM (Montpellier)			&Examinateur  \\
+	Mme. Véronique {\sc PERDEREAU} 	& Professeur des universités, ISIR (Paris) 				&Examinatrice  \\
+	M. Laurent {\sc SABOURIN} 		& Maître de conférences HDR, Institut Pascal 			&Directeur de thèse\\
+	M. Nicolas {\sc BOUTON} 		& Maître de conférences, Institut Pascal 				&Encadrant\\
+	M. Jean-Christophe {\sc FAUROUX}& Maître de conférences HDR, Institut Pascal 			&Encadrant\\
+	M. Youcef {\sc MEZOUAR} 		& Professeur des universités, Institut Pascal			&Encadrant\\
+\end{tabular}
+}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%page de garde%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+\begin{frame}[plain]
+\begin{textblock*}{1.5cm}(1cm,0.2cm)
+\includegraphics[width=\textwidth]{Logo_Labex}
+\end{textblock*}
+\begin{textblock*}{1.5cm}(3.2cm,0.2cm)
+\includegraphics[width=\textwidth]{Logo_IP}
+\end{textblock*}
+\begin{textblock*}{1.5cm}(5.25cm,0.5cm)
+\includegraphics[width=1.5\textwidth]{Logo_Sigma}
+\end{textblock*}
+\begin{textblock*}{1.5cm}(8cm,0.2cm)
+\includegraphics[width=\textwidth]{Logo_CNRS}
+\end{textblock*}
+\begin{textblock*}{1.5cm}(10.5cm,0.2cm)
+\includegraphics[width=\textwidth]{Logo_UCA}
+\end{textblock*}
+
+\begin{textblock*}{12.6cm}(0.2cm,2cm)
+\centering
+Thèse de doctorat
+\end{textblock*}
+\vspace*{2.5cm}
+\titlepage
+\end{frame}
+%\vspace*{0.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------debut-------------------------
+
+% % % % % % % % % % % % % % % SOMMAIRE % % % % % % % % % % % % % % % % %
+\begin{frame}{Sommaire}
+\tableofcontents[hidesubsections]
+\end{frame}
+% % % % % % % % % % % % % % % % % % % % % % % % % % %
+%%%%%%%%%%%%%%%%%%%Section 1%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\begin{frame}
+\small{\tableofcontents[currentsection,hideothersubsections]}
+\end{frame}
+%------------------subsection1------------------------
+\subsection{Présentation des manipulateurs mobiles}
+%------------------------------------------------------
+%diap3
+\begin{frame}{Structure d'un manipulateur mobile}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize 
+\begin{textblock*}{3.8cm}(4.5cm, 2cm) % {block width}
+ \begin{block}{}
+  \centering
+  Manipulateur Mobile (MM)
+ \end{block}
+\end{textblock*}
+
+\begin{textblock*}{6cm}(0.2cm, 2.75cm)
+ \begin{block}{Bras manipulateur}
+  Classification selon l'architecture cinématique\\
+  \textcolor{red}{$\blacksquare$} Sérielle \textcolor{vert}{$\blacksquare$} Parallèle 
+ \end{block}
+\end{textblock*}
+
+\begin{textblock*}{6cm}(6.6cm, 2.75cm)
+ \begin{block}{Plateforme mobile}
+  Classification selon l'organe de locomotion\\
+  \textcolor{red}{$\CIRCLE$} Corps
+  \textcolor{vert}{$\CIRCLE$} Pattes
+  \textcolor{blue}{$\CIRCLE$} Chenilles
+  \textcolor{magenta}{$\CIRCLE$} Roues
+ \end{block}
+\end{textblock*}
+}
+
+% Figures
+\begin{textblock*}{2cm}(0.2cm, 5.5cm)
+\includegraphics[width=\textwidth]{Chapitre1_Manipulateurs_Seriels_Collaboratifs_Kuka}
+\end{textblock*}
+\begin{textblock*}{2cm}(0.2cm, 8cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$}\textit{LWR iiwa,\\ \textbf{Kuka}}}\\
+\end{textblock*}
+
+\begin{textblock*}{2cm}(2.2cm, 5.5cm)
+\includegraphics[width=\textwidth]{Chapitre1_Manipulateurs_Paralleles_Quattro}
+\end{textblock*}
+\begin{textblock*}{2cm}(2.2cm, 8cm)
+\centering
+\tiny{\textcolor{vert}{$\blacksquare$}\textit{Quattro,\\ \textbf{LIRMM Adept-Omron}}}\\
+\end{textblock*}
+
+\begin{textblock*}{2cm}(4.2cm, 5cm)
+\includegraphics[width=\textwidth]{Chapitre1_Manipulateurs_Hybrides_IRB_940}
+\end{textblock*}
+\begin{textblock*}{2cm}(4.2cm, 8cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$}\textcolor{vert}{$\blacksquare$}\textit{Tricept,\\ \textbf{ABB}}}\\
+\end{textblock*}
+
+
+\begin{textblock*}{2cm}(6.6cm, 4.45cm)
+\includegraphics[width=\textwidth]{Chapitre1_Moyens_de_Locomotion_Corps}
+\end{textblock*}
+\begin{textblock*}{2.1cm}(6.5cm, 6.05cm)
+\centering
+\tiny{\textcolor{red}{$\CIRCLE$}  Serpent modulaire, \\ \textbf{Wright \textit{et al.,} [2012]}}
+\end{textblock*}
+
+\begin{textblock*}{2cm}(8.7cm, 4.45cm)
+\includegraphics[width=\textwidth]{SpotMini}
+\end{textblock*}
+\begin{textblock*}{2cm}(8.7cm, 6.05cm)
+\centering
+\tiny{\textcolor{vert}{$\CIRCLE$}  \textit{SpotMini},\\ \textbf{Boston Dynamics}}
+%\tiny{Wright \textit{et al.,} [2012]}\\
+\end{textblock*}
+
+\begin{textblock*}{2cm}(10.8cm, 4.45cm)
+\includegraphics[width=\textwidth]{Jaguar_Lite}
+\end{textblock*}
+\begin{textblock*}{2cm}(10.8cm, 6.05cm)
+\centering
+\tiny{\textcolor{blue}{$\CIRCLE$}  \textit{Jaguar Lite},\\ \textbf{Dr Robot}}\\
+%\tiny{Wright \textit{et al.,} [2012]}\\
+\end{textblock*}
+
+\begin{textblock*}{3cm}(6.6cm, 6.75cm)
+\centering
+\includegraphics[width=.75\textwidth]{SUMMIT-XL}
+\end{textblock*}
+\begin{textblock*}{3cm}(6.6cm, 8.7cm)
+\centering
+\tiny{\textcolor{magenta}{$\CIRCLE$}  \textit{SUMMIT-XL},\\ \textbf{Robotnik}}\\
+%\tiny{Wright \textit{et al.,} [2012]}\\
+\end{textblock*}
+
+\begin{textblock*}{3cm}(9.7cm, 6.75cm)
+\includegraphics[width=\textwidth]{Chapitre1_Moyens_de_Locomotion_Hybride}
+\end{textblock*}
+\begin{textblock*}{3cm}(9.7cm, 8.7cm)
+\centering
+\tiny{\textcolor{magenta}{$\CIRCLE$}\textcolor{vert}{$\CIRCLE$}  \textit{OpenWheel i3R},\\ \textbf{Fauroux \textit{et al.,} [2007]}}\\
+\end{textblock*}
+
+\end{frame}
+%-----------------------------------------------------
+%diap4
+\begin{frame}{Domaines d'utilisation des Manipulateurs Mobiles (MMs)}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize 
+\begin{textblock*}{3.7cm}(0.2cm, 2cm) % {block width}
+\begin{block}{Environnement}
+\textcolor{red}{$\blacksquare$} Extérieur\\
+\textcolor{vert}{$\blacksquare$} Franchissement d'obstacles\\
+\end{block}
+\end{textblock*}
+ 
+\begin{textblock*}{3.7cm}(0.2cm, 3.5cm) % {block width}
+  \begin{block}{Utilisation}
+\textcolor{blue}{$\blacksquare$} Manipulation\\
+\textcolor{magenta}{$\blacksquare$} Opérations industrielles
+ \end{block}
+\end{textblock*}
+}
+
+% Figures
+\begin{textblock*}{4.1cm}(4.1cm, 2.25cm)
+\includegraphics[width=\textwidth]{Chapitre1_Utilisation_Manipulateurs_Mobiles_Quantec}
+\end{textblock*}
+\begin{textblock*}{4.1cm}(4.1cm, 4.8cm)
+\centering
+\tiny{\textcolor{magenta}{$\blacksquare$} Parachèvement des pièces}\\
+\tiny{\textit{Robot KMR Quantec, \textbf{Kuka}}}\\
+\end{textblock*}
+
+\begin{textblock*}{4.1cm}(8.3cm, 2.25cm)
+\includegraphics[width=\textwidth]{Chapitre1_Utilisation_Manipulateurs_Mobiles_Curiosity}
+\end{textblock*}
+\begin{textblock*}{4.1cm}(8.3cm, 4.8cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$}\textcolor{vert}{$\blacksquare$}\textcolor{blue}{$\blacksquare$}\textcolor{magenta}{$\blacksquare$} Exploration spatiale}\\
+\tiny{\textit{Robot Curiosity, \textbf{Jet Propulsion Lab}}}\\
+\end{textblock*}
+
+\begin{textblock*}{1.85cm}(0.1cm, 5.5cm)
+\centering
+\includegraphics[width=1.85cm]{Chapitre1_Utilisation_Manipulateurs_Mobiles_Robot_Perceur}
+\end{textblock*}
+\begin{textblock*}{2cm}(0.05cm, 8.7cm)
+\centering
+\tiny{\textcolor{magenta}{$\blacksquare$} Polissage}\\
+%\tiny{\textit{Projet Bots2Rec},} 
+\tiny{\textbf{Detert et al., [2017]}}
+\end{textblock*}
+
+%---------------------------------------------------------------------------
+
+\begin{textblock*}{2.75cm}(2.05cm, 5.5cm)
+\centering
+\includegraphics[width=0.88\linewidth]{Chapitre1_Utilisation_Manipulateurs_Mobiles_Magali}
+\end{textblock*}
+\begin{textblock*}{2.75cm}(2.05cm, 8.7cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$}\textcolor{blue}{$\blacksquare$} Cueillette des pommes}\\ 
+\tiny{\textit{MAGALI, \textbf{IRSTEA}}}
+\end{textblock*}
+
+\begin{textblock*}{3cm}(4.9cm, 5.5cm)
+\centering
+\includegraphics[width=3cm]{Chapitre1_Manipulateurs_Mobiles_Locomotion_Packbot}
+\end{textblock*}
+\begin{textblock*}{3cm}(4.9cm, 8.7cm)
+\centering
+\tiny{\textit{\textcolor{red}{$\blacksquare$}\textcolor{vert}{$\blacksquare$}\textcolor{blue}{$\blacksquare$} Inspection et intervention}\\
+\tiny{\textit{Packbot}}, \textbf{Endeavor Robotics}}\\
+\end{textblock*}
+
+\begin{textblock*}{2.5cm}(8cm, 5.5cm)
+\centering
+\includegraphics[width=2.5cm]{Chapitre1_Utilisation_Manipulateurs_Mobiles_Recherche_H2Bis}
+\end{textblock*}
+\begin{textblock*}{2.75cm}(8cm, 8.7cm)
+\centering
+\tiny{\textcolor{blue}{$\blacksquare$} Recherche scientifique}\\
+\tiny{\textit{$H^2Bis$}, \textbf{Padois et al., [2006]}}\\
+\end{textblock*}
+
+\begin{textblock*}{2.2cm}(10.55cm, 5.5cm)
+\centering
+\includegraphics[width=\textwidth]{Handle}
+\end{textblock*}
+\begin{textblock*}{2cm}(10.7cm, 8.7cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$}\textcolor{vert}{$\blacksquare$}\textcolor{blue}{$\blacksquare$} Robot \textit{Handle},\\ \textbf{Boston Dynamics}}
+\end{textblock*}
+
+
+\end{frame}
+%-----------------------------------------------------
+%------------------subsection2------------------------
+\subsection{Coopération en robotique}
+%------------------------------------------------------
+%diap5
+\begin{frame}{Coopération Vs Collaboration}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize 
+\begin{textblock*}{6cm}(0.2cm, 1.65cm)
+ \begin{block}{Coopération}
+  $\Box$ Interactions robot-robot\\
+ \end{block}
+\end{textblock*}
+
+\begin{textblock*}{6cm}(6.6cm, 1.65cm)
+ \begin{block}{Collaboration}
+  $\Circle$ Interactions homme-robot\\
+ \end{block}
+\end{textblock*}
+
+
+\begin{textblock*}{4cm}(5cm, 2.875cm)
+ \textcolor{red}{\textbf{- Plateformes mobiles}}\\
+ \textcolor{vert}{\textbf{- Bras manipulateurs}}
+\end{textblock*}
+}
+
+
+\only<2>{
+\begin{textblock*}{8cm}(0.2cm, 7.25cm)
+\textbf{Objet des travaux :}\\ coopération des manipulateurs mobiles
+\end{textblock*}
+}
+
+% Figures
+\begin{textblock*}{3.1cm}(0.1cm, 3.625cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre1_Cooperation_Plateformes_Mobiles_Poussee}
+\end{textblock*}
+\begin{textblock*}{3.1cm}(0.1cm, 6.5cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$} Poussée coopérative}\\
+\tiny{\textbf{Gerkey et al., [2002]}}\\
+\end{textblock*}
+
+\begin{textblock*}{3.1cm}(3.3cm, 3.875cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre1_Paragrip}
+\end{textblock*}
+\begin{textblock*}{3.1cm}(3.3cm, 6.5cm)
+\centering
+\tiny{\textcolor{vert}{$\blacksquare$} Manipulation coopérative}\\
+\tiny{\textbf{Mannheim et al., [2013]}}\\
+\end{textblock*}
+
+\begin{textblock*}{3cm}(6.4cm, 3.625cm)
+\centering
+\includegraphics[width=2cm]{Chapitre1_Collaboration_Plateformes_Mobiles_Transport_Collaboratif}
+\end{textblock*}
+\begin{textblock*}{3cm}(6.4cm, 6.5cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$}\textcolor{red}{$\CIRCLE$} Transport collaboratif}\\
+\tiny{\textbf{Hirata et al., [2009]}}\\
+\end{textblock*}
+
+\begin{textblock*}{3.1cm}(9.6cm, 4cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre1_Collaboration_Manipulateurs_Cherubini}
+\end{textblock*}
+\begin{textblock*}{3.1cm}(9.6cm, 6.5cm)
+\centering
+\tiny{\textcolor{vert}{$\CIRCLE$} Montage collaboratif}\\
+\tiny{\textbf{Cherubini et al., [2013]}}\\
+\end{textblock*}
+
+\only<2>{
+\begin{textblock*}{3.5cm}(9.25cm, 7.05cm)
+\centering
+\includegraphics[width=\textwidth]{Hirata}
+\end{textblock*}
+\begin{textblock*}{3.25cm}(6cm, 8.25cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$}\textcolor{vert}{$\blacksquare$} Transport et manipulation coopérative}\\
+\tiny{\textbf{Hirata et al., [2008]}}\\
+\end{textblock*}
+}
+\end{frame}
+
+
+
+%diap6
+\begin{frame}{Coopération des manipulateurs mobiles}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize 
+\begin{textblock*}{3cm}(0.2cm, 1.75cm) % {block width}
+\begin{block}{} %{Environnement}
+\textcolor{red}{$\blacksquare$} Extérieur\\
+\textcolor{blue}{$\blacksquare$} MMs différents\\
+\textcolor{magenta}{$\blacksquare$} Plus de 2 MMs
+ \end{block}
+\end{textblock*}
+}
+% Figures
+\begin{textblock*}{3.75cm}(3.4cm, 1.9cm)
+\centering
+\includegraphics[width=3.75cm]{Chapitre1_Cooperation_Manipulateurs__Mobiles_Khatib}
+\end{textblock*}
+\begin{textblock*}{3.75cm}(3.4cm, 4.9cm) %3.6
+\centering
+\tiny{Manipulation et transport}\\
+\tiny{\textbf{Khatib et al., [1999]}}\\
+\end{textblock*}
+
+\begin{textblock*}{4.25cm}(8cm, 1.9cm) %3.9
+\centering
+\includegraphics[width=\linewidth]{Chapitre1_Cooperation_Manipulateurs__Mobiles_Sugar}
+\end{textblock*}
+\begin{textblock*}{4cm}(8cm, 4.9cm)
+\centering
+\tiny{\textcolor{blue}{$\blacksquare$} Transport de charges}\\
+\tiny{\textbf{Sugar et al., [2000]}}\\
+\end{textblock*}
+
+\begin{textblock*}{4.1cm}(0.15cm, 5.5cm)
+\centering
+\includegraphics[width=3.9cm]{Chapitre1_Cooperation_Manipulateurs__Mobiles_Stroupe}
+\end{textblock*}
+\begin{textblock*}{4.1cm}(0.15cm, 8.7cm)
+\centering
+\tiny{\textcolor{red}{$\blacksquare$} Transport de poutres}\\ 
+\tiny{\textbf{Stroupe et al., [2006]}}\\
+\end{textblock*}
+
+\begin{textblock*}{4.5cm}(4.3cm, 6cm)
+\centering
+\includegraphics[width=\linewidth]{Chapitre1_Cooperation_Manipulateurs__Mobiles_Kume}
+\end{textblock*}
+\begin{textblock*}{4.5cm}(4.3cm, 8.7cm)
+\centering
+\tiny{\textcolor{magenta}{$\blacksquare$} Manipulation et transport de charges lourdes}\\
+\tiny{\textbf{Kume et al., [2002]}}\\
+\end{textblock*}
+
+\begin{textblock*}{4.1cm}(8.5cm, 5.5cm)
+\centering
+\includegraphics<1>[width=3cm]{C3Bots_1}
+\includegraphics<2>[width=3cm]{C3Bots_2}
+\includegraphics<3>[width=3cm]{C3Bots_3}
+\end{textblock*}
+\begin{textblock*}{4.1cm}(8.5cm, 8.7cm)
+\centering
+\tiny{\textcolor{magenta}{$\blacksquare$} Transport de charges}\\
+\tiny{\textbf{Hichri et al., [2015]}}\\
+\end{textblock*}
+\end{frame}
+
+%-----------------------------------------------------
+%------------------subsection3------------------------
+\subsection{Défis des manipulateurs mobiles}
+%------------------------------------------------------
+%diap6
+\begin{frame}{Limites des solutions actuelles des manipulateurs mobiles coopératifs}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %scriptsize 
+\begin{textblock*}{12cm}(0.4cm, 1.75cm)
+ \begin{block}{Besoins actuels}
+- \textcolor{blue}{\textbf{Accroître les performances}} dans le domaine industriel et de service \\
+- S'adapter aux besoins de \textcolor{blue}{\textbf{modularité et reconfigurabilité}} de l'industrie 4.0 
+ \end{block}
+\end{textblock*}
+
+\only<2->{
+\begin{textblock*}{12cm}(0.4cm, 4cm)
+ \begin{block}{Limites des solutions existantes des MMs}
+  - Manipulateurs mobiles formés par la concaténation de deux robots industriels : \\
+  \hspace{0.5cm}$\Rightarrow$ Architecture \textcolor{blue}{\textbf{redondante}} \\
+  \hspace{0.5cm}$\Rightarrow$ Commande \textcolor{blue}{\textbf{complexe}} \\
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Coûts}} de fonctionnement et de maintenance \textcolor{blue}{\textbf{élevés}} \\
+ \end{block}
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{12cm}(0.4cm, 7cm)
+ \begin{block}{Amélioration possibles des manipulateurs mobiles}
+- Utiliser les MMs dans des \textcolor{blue}{\textbf{systèmes robotiques coopératifs}}\\ 
+- Arriver à \textcolor{blue}{\textbf{modéliser et à commander}} un système robotique coopératif
+ \end{block}
+\end{textblock*}
+}
+}
+\end{frame}
+
+%diap6
+%\begin{frame}{} %{Défis principaux des manipulateurs mobiles coopératifs}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\small %scriptsize 
+%\begin{textblock*}{12cm}(0.4cm, 1.4cm)
+%\begin{block}{Défis 1: Élargissement des domaines d'utilisation}
+% \textcolor{red}{$\blacksquare$ Modularité} : Concevoir des systèmes robotiques modulaires\\
+% \textcolor{vert}{$\blacksquare$ Reconfigurabilité} : Modifier rapidement et à moindre coût l'espace de travail
+%\end{block}
+%\end{textblock*}
+%
+%\begin{textblock*}{12cm}(0.4cm, 3.5cm)
+%\begin{block}{Défis 2: Conception des nouvelles architectures}
+% \textcolor{red}{$\CIRCLE$ Choix des actionneurs} : Combiner des liaisons actives et passives\\
+% \textcolor{vert}{$\CIRCLE$ Adaptabilité des effecteurs} : Incorporer des systèmes de changeurs d'outils\\
+% \textcolor{blue}{$\CIRCLE$ Respect des normes de la robotique collaborative} : Accompagner les opérateurs dans les tâches pénibles
+%\end{block}
+%\end{textblock*}
+%
+%\begin{textblock*}{12cm}(0.4cm, 6.5cm)
+%\begin{block}{Défis 3: Modélisation et commandes des nouvelles architectures de MMs}
+% \textcolor{red}{$\blacklozenge$ Singularités} : Détecter puis éviter ou traverser ces singularités\\
+% \textcolor{vert}{$\blacklozenge$ Redondances} : Optimiser la posture des manipulateurs mobiles
+%\end{block}
+%\end{textblock*}
+%}
+%
+%\end{frame}
+
+%-----------------------------------------------------
+%------------------subsection4------------------------
+\subsection{Objectifs de la thèse}
+%------------------------------------------------------
+%diap6
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %scriptsize 
+\begin{textblock*}{12cm}(0.4cm, 1.75cm)
+\begin{block}{Objectif 1 : identifier des tâches pouvant bénéficier des MMs coopératifs}
+- Considérer \textcolor{blue}{\textbf{différents domaines}} : industrie, génie civil, logistique, ...\\
+- Prendre en compte les exigences de \textcolor{blue}{\textbf{modularité et de reconfigurabilité}}
+\end{block}
+\end{textblock*}
+
+\begin{textblock*}{12cm}(0.4cm, 4cm)
+\begin{block}{Objectif 2 : concevoir des nouvelles architectures cinématiques}
+\justifying
+- \textcolor{blue}{\textbf{Analyse structurale}} des manipulateurs mobiles en tenant compte de leur utilisation coopérative\\
+- Proposition d'une \textcolor{blue}{\textbf{démarche générique de synthèse structurale}} en minimisant le nombre d'actionneurs
+\end{block}
+\end{textblock*}
+
+\begin{textblock*}{12cm}(0.4cm, 7cm)
+\begin{block}{Objectif 3 : Modéliser et commander les nouvelles architectures cinématiques}
+\justifying
+- \textcolor{blue}{\textbf{Modélisation}} en vue de commander des nouvelles architectures issues de la synthèse structurale\\
+- \textcolor{blue}{\textbf{Validation des lois de commande}} avec des simulations
+\end{block}
+\end{textblock*}
+}
+\end{frame}
+
+%\begin{frame}{Méthodologie}
+%\begin{figure}[h]
+%\centering
+%\includegraphics<1>[width=0.9\linewidth]{Methodologie_1}
+%\includegraphics<2>[width=0.9\linewidth]{Methodologie_2}
+%\includegraphics<3>[width=0.9\linewidth]{Methodologie_3}
+%\includegraphics<4>[width=0.9\linewidth]{Methodologie_4}
+%\end{figure}
+%\end{frame}
+
+%-----------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%Section 2%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Système robotique coopératif et analyse structurale}
+\begin{frame}
+\small{\tableofcontents[currentsection,hideothersubsections]}
+\end{frame}
+%------------------subsection------------------------
+\subsection{Présentation du système robotique coopératif}
+%------------------------------------------------------
+%diap
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\scriptsize 
+%\begin{textblock*}{3.3cm}(9.2cm, 1.3cm) % {block width}
+% \begin{exampleblock}{Modularité}
+%  Changements possibles
+%  \begin{itemize}
+%   \item Outils
+%   \item Structure cinématique
+%   \item Connexions
+%  \end{itemize}
+% \end{exampleblock}
+%\end{textblock*}
+%}
+%
+%{\scriptsize 
+%\begin{textblock*}{3.3cm}(9.2cm, 6cm) % {block width}
+% \begin{exampleblock}{Reconfigurabilité}
+%  \begin{itemize}
+%   \item Locomotion
+%  \end{itemize}
+% \end{exampleblock}
+%\end{textblock*}
+%}
+
+
+% Figure
+\begin{textblock*}{9cm}(0cm, 1.5cm)
+\flushleft
+\includegraphics<1>[width=\textwidth]{Chapitre2_Description_Systeme_1}
+\includegraphics<2>[width=\textwidth]{Chapitre2_Description_Systeme_2}
+\includegraphics<3>[width=\textwidth]{Chapitre2_Description_Systeme_3}
+\includegraphics<4>[width=\textwidth]{Chapitre2_Description_Systeme_4}
+\includegraphics<5>[width=\textwidth]{Chapitre2_Description_Systeme}
+\end{textblock*}
+
+
+\begin{textblock*}{4.4cm}(8.2cm, 1.75cm)
+\centering
+\includegraphics<1>[width=0.5\textwidth]{Humain_1}
+\includegraphics<2-3>[width=\textwidth]{Humain_2}
+\end{textblock*}
+\only<1>{
+\begin{textblock*}{4.4cm}(8.2cm, 5.5cm)
+\centering
+\tiny{Un opérateur humain transportant une charge}
+\end{textblock*}
+}
+\begin{textblock*}{4.4cm}(8.2cm, 5.875cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Fourmis_1}
+\end{textblock*}
+\only<1>{
+\begin{textblock*}{4.4cm}(8.2cm, 9cm)
+\centering
+\tiny{Une fourmi transportant une charge}
+\end{textblock*}
+}
+
+\only<2-3>{
+\begin{textblock*}{4.4cm}(8.2cm, 5.5cm)
+\centering
+\tiny{Deux humains transportant une charge}
+\end{textblock*}
+}
+
+\begin{textblock*}{4.4cm}(8.2cm, 6.25cm)
+\centering
+\includegraphics<2-3>[width=\textwidth]{Fourmis_2}
+\end{textblock*}
+\only<2-3>{
+\begin{textblock*}{4.4cm}(8.2cm, 9cm)
+\centering
+\tiny{Deux fourmis transportant une charge}
+\end{textblock*}
+}
+
+\begin{textblock*}{4.4cm}(8.2cm, 2cm)
+\centering
+\includegraphics<4>[width=\textwidth]{Humain_Connexion}
+\end{textblock*}
+\only<4>{
+\begin{textblock*}{4.4cm}(8.2cm, 5.5cm)
+\centering
+\tiny{Des rugbymen dans une mêlée}
+\end{textblock*}
+}
+
+\begin{textblock*}{3.4cm}(9.2cm, 6cm)
+\centering
+\includegraphics<5>[width=\textwidth]{Fourmis_3}
+\end{textblock*}
+\only<5>{
+\begin{textblock*}{3.4cm}(9.2cm, 8cm)
+\centering
+\tiny{Plusieurs fourmis transportant une charge}
+\end{textblock*}
+}
+
+
+\begin{textblock*}{3.4cm}(9.2cm, 2cm)
+\centering
+\includegraphics<5>[width=\textwidth]{Humain_Connexion}
+\end{textblock*}
+\only<5>{
+\begin{textblock*}{3.4cm}(9.2cm, 4.5cm)
+\centering
+\tiny{Des rugbymen dans une mêlée}
+\end{textblock*}
+}
+
+
+
+\end{frame}
+
+%diap
+\begin{frame}{Avantages d'utilisation du système robotique coopératif}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\begin{textblock*}{12cm}(0.4cm, 2.1cm)
+% \begin{block}{Avantages d'utilisation du système robotique coopératif}
+  \justifying
+  - \textcolor{blue}{\textbf{Modularité} :} Le p-bot est composé de m-bots, composés de modules\\
+  \hspace{1.5cm}$\Rightarrow$ \textcolor{black}{\textbf{Diminution}} des coûts de maintenance\\
+  \hspace{1.5cm}$\Rightarrow$ \textcolor{black}{\textbf{Adaptabilité}} à la charge et à la tâche\\
+  
+  \vspace{0.25cm}
+  - \textcolor{blue}{\textbf{Agilité} :} Le système robotique est composé d'entités agiles\\
+  \hspace{1.5cm}$\Rightarrow$ \textcolor{black}{\textbf{Reconfigurabilité}} par rapport aux demandes variables\\
+  \hspace{1.5cm}$\Rightarrow$ \textcolor{black}{\textbf{Flexibilité}} des moyens de productions\\
+  
+  \vspace{0.25cm}
+  - p-bot en mode \textcolor{blue}{\textbf{co-manipulation}}\\
+  \hspace{1.5cm}$\Rightarrow$ Amélioration de la \textcolor{black}{\textbf{stabilité}} du p-bot\\
+  \hspace{1.5cm}$\Rightarrow$ Augmentation de la \textcolor{black}{\textbf{capacité de charge}}\\
+  
+  \vspace{0.25cm}
+  - p-bot en mode \textcolor{blue}{\textbf{connexion}}\\
+  \hspace{1.5cm}$\Rightarrow$ Amélioration de la \textcolor{black}{\textbf{stabilité}}\\
+  \hspace{1.5cm}$\Rightarrow$ Augmentation de la \textcolor{black}{\textbf{poussée au sol}}\\
+% \end{block}
+\end{textblock*}
+\end{frame}
+
+%diap
+\begin{frame}{Utilisation dans la tâche de dévracage}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize 
+\only<2->{
+\begin{textblock*}{6cm}(0.2cm, 1.9cm) % {block width}
+ \begin{block}{Mode m-bot}
+  - \textcolor{cyan}{m-bot$_1$} : manipulation des charges \textbf{A}\\
+  - Un seul bras opérationnel\\
+  - Outil de manipulation
+ \end{block}
+\end{textblock*}
+}
+
+\only<3->{
+\begin{textblock*}{6cm}(0.2cm, 4.5cm) % {block width}
+ \begin{exampleblock}{Mode p-bot en co-manipulation de la charge}
+  - \textcolor{vert}{m-bot$_2$} et \textcolor{vert}{m-bot$_3$} en co-manipulation des charges \textbf{B}\\
+  \textcolor{vert}{\textbf{Stabilité $\nearrow$}} \textcolor{red}{\textbf{Capacité de charge $\nearrow$}} 
+ \end{exampleblock}
+\end{textblock*}
+}
+
+\only<4->{
+\begin{textblock*}{6cm}(0.2cm, 6.75cm) % {block width}
+ \begin{alertblock}{Mode p-bot en connexion}
+  - Le \textcolor{orange}{m-bot$_{4}$} se connecte à \textcolor{orange}{m-bot$_{5}$} pour la manipulation des charges \textbf{A} ou \textbf{B}\\
+  - \textbf{Accessibilité} des zones difficiles\\
+  \textcolor{vert}{\textbf{Stabilité $\nearrow$}} %\textcolor{violet}{\textbf{Poussée au sol $\nearrow$}}
+ \end{alertblock}
+\end{textblock*}
+}
+}
+
+% Figure
+\begin{textblock*}{5.875cm}(6.725cm, 2.1cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Devracage_1}
+\includegraphics<2>[width=\textwidth]{Devracage_2}
+\includegraphics<3>[width=\textwidth]{Devracage_3}
+\includegraphics<4>[width=\textwidth]{Devracage_4}
+\end{textblock*}
+
+\end{frame}
+
+
+
+%-----------------------------------------------------
+%------------------subsection------------------------
+\subsection{Manipulation et transport d'objets en contexte industriel}
+%------------------------------------------------------
+%diap
+\begin{frame}{Exemple d'application}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %criptsize
+\begin{textblock*}{6cm}(0.2cm, 1.7cm)
+\begin{block}{Défis $N\degres5$ du PSA Booster DAY 2016}
+%- $1^{\text{ère}}$ étape : 
+- Levage depuis le sol\\
+%- $2^{\text{ème}}$ étape : 
+- Transport de charges\\
+%- $3^{\text{ème}}$ étape : 
+- Rangement dans des meubles
+\end{block}
+\end{textblock*}
+}
+
+% Figures
+\begin{textblock*}{7cm}(5.75cm, 1.6cm)
+\begin{figure}[h]
+\flushright
+\includegraphics<1>[width=0.9\linewidth]{Chapitre3_Definition_Tache_Environnement_Debut}
+\includegraphics<2->[width=0.9\linewidth]{Chapitre3_Definition_Tache_Environnement_Fin}
+\end{figure}
+\end{textblock*}
+
+\only<1>{
+\begin{textblock*}{5cm}(3.5cm, 4.35cm)
+\flushleft
+\normalsize{\textbf{Étape initiale}}
+\end{textblock*}
+}
+
+\only<2->{
+\begin{textblock*}{5cm}(3.5cm, 4.35cm)
+\flushleft
+\normalsize{\textbf{Étape finale}}
+\end{textblock*}
+}
+
+\only<3>{
+{\scriptsize 
+\begin{textblock*}{6cm}(6.6cm, 6.75cm) % {block width}
+ \begin{block}{Description des caisses}
+- Caisses normalisées utilisées dans le domaine de l'automobile\\
+- Variétés des caisses et de leurs contenus
+ \end{block}
+\end{textblock*}
+}
+
+% Figures
+\begin{textblock*}{3cm}(0.2cm, 6.2cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre2_Definition_Tache_Environnement_Caisse_Vide}
+\end{textblock*}
+\begin{textblock*}{3cm}(0.2cm, 8.7cm)
+\centering
+\tiny{Caisses normalisées VDA}\\
+\tiny{\textbf{Axess Industries}}
+\end{textblock*}
+
+\begin{textblock*}{2.75cm}(3.5cm, 6.2cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre2_Definition_Tache_Environnement_Caisse_Pleine}
+\end{textblock*}
+\begin{textblock*}{2.75cm}(3.5cm, 8.7cm)
+\centering
+\tiny{Caisse remplie de pièces}\\
+%\tiny{\textbf{Durville, [2016]}}
+\end{textblock*}
+}
+
+\end{frame}
+
+%diap
+%\begin{frame}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\small %criptsize 
+%\begin{textblock*}{4.25cm}(0.2cm, 1.5 cm) % {block width}
+% \begin{block}{Charge}
+%- Caisses Normalisées utilisées dans le domaine de l'automobile\\
+%- Variété des caisses et de leurs contenus
+% \end{block}
+%\end{textblock*}
+%}
+
+%% Figures
+%\begin{textblock*}{3.5cm}(5cm, 1.75cm)
+%\centering
+%\includegraphics[width=\textwidth]{Chapitre2_Definition_Tache_Environnement_Caisse_Vide}
+%\end{textblock*}
+%\begin{textblock*}{3.5cm}(5cm, 4.75cm)
+%\centering
+%\tiny{Caisses normalisées VDA}\\
+%\tiny{\textbf{Axess Industries}}
+%\end{textblock*}
+%
+%\begin{textblock*}{3cm}(9cm, 1.75cm)
+%\centering
+%\includegraphics[width=\textwidth]{Chapitre2_Definition_Tache_Environnement_Caisse_Pleine}
+%\end{textblock*}
+%\begin{textblock*}{3cm}(9cm, 4.75cm)
+%\centering
+%\tiny{Caisse remplie de pièces}\\
+%%\tiny{\textbf{Durville, [2016]}}
+%\end{textblock*}
+
+%{\small %criptsize 
+%\begin{textblock*}{4.25cm}(0.2cm, 5.5cm) % {block width}
+% \begin{block}{Outil opérationnel}
+%- Forme spécifique minimisant le nombre de liaisons\\
+%- Adapté à toutes les caisses normalisées\\
+% \end{block}
+%\end{textblock*}
+%}
+
+%% Figures
+%\begin{textblock*}{3.5cm}(5cm, 5.5cm)
+%\centering
+%\includegraphics[width=2cm]{Chapitre4_Tache_mbot_Outil_ISO}
+%\end{textblock*}
+%\begin{textblock*}{3.5cm}(5cm, 8.7cm)
+%\centering
+%\tiny{Outil de préhension}
+%\end{textblock*}
+%
+%\begin{textblock*}{3cm}(9cm, 5.5cm)
+%\centering
+%\includegraphics[width=\textwidth]{Chapitre4_Tache_mbot_Outil_Caisse_ISO}
+%\end{textblock*}
+%\begin{textblock*}{3cm}(9cm, 8.7cm)
+%\centering
+%\tiny{Outil en manipulation de la caisse}
+%\end{textblock*}
+
+%\end{frame}
+
+%diap
+\begin{frame}{Réalisation de la tâche en m-bot}
+\vspace{1cm}
+\begin{figure}[h]
+\centering
+\includegraphics<1>[width=\linewidth]{Chapitre4_Tache_mbot_1_Initiale}
+\includegraphics<2>[width=\linewidth]{Chapitre4_Tache_mbot_3_Accroche}
+\includegraphics<3>[width=\linewidth]{Chapitre4_Tache_mbot_4_Levage}
+\includegraphics<4>[width=\linewidth]{Chapitre4_Tache_mbot_5_Mouvement}
+\includegraphics<5>[width=\linewidth]{Chapitre4_Tache_mbot_6_Depot}
+\end{figure}
+
+\only<1>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 0 :} Position initiale du m-bot face à la caisse}
+\end{textblock*}
+}
+
+\only<2>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 1 :} Préhension de la caisse par l'outil de manipulation}
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 2 :} Levage de la caisse}
+\end{textblock*}
+}
+
+\only<4>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 3 :} Locomotion vers le rack}
+\end{textblock*}
+}
+
+\only<5>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 4 :} Dépose de la caisse sur une étagère du rack}
+\end{textblock*}
+}
+
+\only<1>{
+{\scriptsize 
+\begin{textblock*}{6.5cm}(6cm, 1.7cm) % {block width}
+ \begin{block}{Outil opérationnel}
+- Forme spécifique minimisant le nombre de liaisons\\
+- Adapté à toutes les caisses normalisées\\
+ \end{block}
+\end{textblock*}
+}
+\begin{textblock*}{1.25cm}(1cm, 1.9cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre4_Tache_mbot_Outil_ISO}
+\end{textblock*}
+\begin{textblock*}{2cm}(0.75cm, 3.75cm)
+\centering
+\tiny{Outil de préhension}
+\end{textblock*}
+
+\begin{textblock*}{2cm}(3.25cm, 1.9cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre4_Tache_mbot_Outil_Caisse_ISO}
+\end{textblock*}
+\begin{textblock*}{2.5cm}(3cm, 3.75cm)
+\centering
+\tiny{Outil en manipulation}
+\end{textblock*}
+}
+
+\end{frame}
+
+%diap
+\begin{frame}{Structure cinématique des m-bots}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %criptsize
+\begin{textblock*}{7cm}(0.4cm, 1.9cm)
+\begin{block}{Contraintes sur la partie locomotion}
+- \textbf{Emprise au sol} similaire à un opérateur \\ 
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Deux chaînes}} cinématiques \\
+
+\vspace{0.25cm}
+- Locomotion efficace sur \textbf{terrain régulier} \\ 
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Roues}} comme moyen de locomotion \\
+
+\vspace{0.25cm}
+- \textbf{Pas de franchissement} d'obstacles \\ 
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Pas de châssis}} articulé \\
+\end{block}
+\end{textblock*}
+
+\only<2>{
+\begin{textblock*}{8.5cm}(0.4cm, 6.5cm)
+\begin{block}{Contraintes sur la partie manipulation}
+- Manipulation de \textbf{caisse légère} \\ 
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Une seule}} chaîne cinématique (bras opérationnel)\\
+%\vspace{0.25cm}
+%- Manipulation consiste au levage et maintien de la caisse \\ 
+%  \hspace{1cm}$\Rightarrow$ Outil adapté à la charge \\
+%\vspace{0.25cm}
+%- \textbf{Orientation} de la caisse \\ 
+%  \hspace{0.5cm}$\Rightarrow$ Charge à \textcolor{blue}{\textbf{orientation horizontale}} constante \\
+\end{block}
+\end{textblock*}
+}
+}
+
+
+%% Figures
+\begin{textblock*}{3cm}(9cm, 2.25cm)
+\centering
+\includegraphics[width=\textwidth]{Locomotion}
+\end{textblock*}
+\begin{textblock*}{3cm}(9cm, 5.5cm)
+\centering
+\tiny{Partie locomotion du m-bot}
+\end{textblock*}
+
+\only<2>{
+\begin{textblock*}{3.4cm}(9.2cm, 6.5cm)
+\centering
+\includegraphics[width=\textwidth]{Manipulation}
+\end{textblock*}
+\begin{textblock*}{3.4cm}(9.2cm, 8.5cm)
+\centering
+\tiny{Partie manipulation du m-bot}
+\end{textblock*}
+}
+\end{frame}
+
+
+%diap
+\begin{frame}{Réalisation de la tâche en mode p-bot en co-manipulation}
+\begin{figure}[h]
+\centering
+\includegraphics<1>[width=\linewidth]{Chapitre4_Tache_pbot_1_Initiale}
+\includegraphics<2>[width=\linewidth]{Chapitre4_Tache_pbot_3_Accroche}
+\includegraphics<3>[width=\linewidth]{Chapitre4_Tache_pbot_4_Levage}
+\includegraphics<4>[width=\linewidth]{Chapitre4_Tache_pbot_5_Locomotion}
+\includegraphics<5>[width=\linewidth]{Chapitre4_Tache_pbot_6_Preparation}
+\includegraphics<6>[width=\linewidth]{Chapitre4_Tache_pbot_7_Depot}
+\end{figure}
+
+\only<1>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 0 :} Position initiale des deux m-bots}
+\end{textblock*}
+}
+
+\only<2>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 1 :} Préhension de la caisse}
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 2 :} Levage de la caisse}
+\end{textblock*}
+}
+
+\only<4>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 3 :} Locomotion vers le rack}
+\end{textblock*}
+}
+
+\only<5>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 4 :} Reconfiguration pour la dépose}
+\end{textblock*}
+}
+
+\only<6>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 5 :} Dépose de la caisse sur une étagère du rack}
+\end{textblock*}
+}
+\end{frame}
+
+%diap
+\begin{frame}{Réalisation de la tâche en mode p-bot en connexion}
+\begin{figure}[h]
+\centering
+\includegraphics<1>[width=\linewidth]{Chapitre4_Tache_pbot_Connexion_1}
+\includegraphics<2>[width=\linewidth]{Chapitre4_Tache_pbot_Connexion_1bis}
+\includegraphics<3>[width=\linewidth]{Chapitre4_Tache_pbot_Connexion_2}
+\includegraphics<4>[width=\linewidth]{Chapitre4_Tache_pbot_Connexion_3}
+\includegraphics<5>[width=\linewidth]{Chapitre4_Tache_pbot_Connexion_4}
+\includegraphics<6>[width=\linewidth]{Chapitre4_Tache_pbot_Connexion_5}
+\end{figure}
+
+\only<1>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 1 :} Position initiale des deux m-bots}
+\end{textblock*}
+}
+
+\only<2>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 2 :} Formation du p-bot}
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 2 :}Préhension de la caisse}
+\end{textblock*}
+}
+
+\only<4>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 3 :} Levage de la caisse}
+\end{textblock*}
+}
+
+\only<5>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 4 :} Locomotion vers le rack}
+\end{textblock*}
+}
+
+\only<6>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 5 :} Dépose de la caisse}
+\end{textblock*}
+}
+
+\end{frame}
+
+%diap
+\begin{frame}{Structure cinématique des p-bots}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{7cm}(0.4cm, 1.9cm)
+\begin{block}{Contraintes sur le p-bot en co-manipulation} %{Spécifications de la partie locomotion}
+- \textbf{Économies} d'échelle et \textbf{modularité} \\ 
+  \hspace{0.5cm}$\Rightarrow$ m-bots tous \textcolor{blue}{\textbf{identiques}} \\
+\vspace{0.25cm}
+- Contraintes sur la partie \textbf{manipulation} \\ 
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{m-bot$_1$}} et \textcolor{blue}{\textbf{m-bot$_2$}} équipés d'outils opérationnels \\
+\vspace{0.25cm}
+- Caisses comportant \textbf{2 poignées} \\ 
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{2 m-bots}} par p-bot \\
+\end{block}
+\end{textblock*}
+
+\only<2>{
+\begin{textblock*}{7cm}(0.4cm, 5.25cm)
+\begin{block}{Contraintes sur le p-bot en connexion} %{Spécifications de la partie locomotion}
+- \textbf{Économies} d'échelle et \textbf{modularité}\\ 
+  \hspace{1cm}$\Rightarrow$ m-bots tous \textcolor{blue}{\textbf{identiques}} \\
+\vspace{0.25cm}
+- Contraintes sur la partie \textbf{manipulation} \\ 
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{m-bot$_1$}} avec outil opérationnel \\
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{m-bot$_2$}} avec outil de connexion \\
+\vspace{0.25cm}
+- Minimiser le nombre de \textbf{contacts au sol} \\ 
+  \hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{2 m-bots}} par p-bot \\
+\end{block}
+\end{textblock*}
+}
+}
+
+
+%% Figures
+\begin{textblock*}{6cm}(7.5cm, 2.1cm)
+\centering
+\includegraphics[width=0.5\textwidth]{p-bot_Co-manipulation}
+\end{textblock*}
+\begin{textblock*}{3cm}(9cm, 5cm)
+\centering
+\tiny{p-bot en co-manipulation}
+\end{textblock*}
+
+\only<2>{
+\begin{textblock*}{6cm}(7.25cm, 5.5cm)
+\centering
+\includegraphics[width=0.75\textwidth]{p-bot_Connexion}
+\end{textblock*}
+\begin{textblock*}{3cm}(9cm, 8.7cm)
+\centering
+\tiny{p-bot en connexion}
+\end{textblock*}
+}
+\end{frame}
+
+%------------------subsection------------------------
+\subsection{Paramètres structuraux des mécanismes}
+%------------------------------------------------------
+
+%diap
+\begin{frame}{Définition des paramètres structuraux (\textbf{Gogu, [2008]})}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{12cm}(0.4cm, 1.9cm)
+\begin{block}{Connectivité $S$}
+%Nombre de déplacements indépendants finis et/ou infinitésimaux permis par le mécanisme entre ses deux solides limites (effecteur et bâti)\\
+Nombre de déplacements finis permis par le mécanisme entre l'effecteur et le bâti\\
+\hspace{4.75cm}$ 0 < S < 6 $\\
+Dimension de l’espace vectoriel des vitesses relatives entre l'effecteur ($H$) et le bâti ($G$)\\
+\hspace{4.5cm}$S = dim(R_{H/G})$\\
+\hspace{0.5cm}$\Rightarrow S_m$ : connectivité du m-bot\\
+\hspace{0.5cm}$\Rightarrow S_p$ : connectivité du p-bot
+\end{block}
+\end{textblock*}
+
+\begin{textblock*}{12cm}(0.4cm, 5.25cm)
+\begin{block}{Mobilité $M$}
+%Nombre de coordonnées indépendantes requises pour la définition de la configuration de la chaîne cinématique\\
+Nombre de coordonnées indépendantes définissant la configuration de la chaîne cinématique\\
+\hspace{4.5cm}$M = \Sigma^p_if_i - r$\\
+$p$ : Nombre des liaisons dans le mécanisme\\
+$f_i$ : Mobilité de la $i^{\text{ème}}$ liaison du mécanisme\\
+%$r$ : Nombre des paramètres qui perdent leur indépendance dans la boucle fermée du mécanisme\\
+$r$ : Nombre des paramètres qui perdent leur indépendance par fermeture de boucle\\
+\hspace{0.5cm}$\Rightarrow M_m$ : mobilité du m-bot\\
+\hspace{0.5cm}$\Rightarrow M_p$ : mobilité du p-bot
+\end{block}
+\end{textblock*}
+}
+\end{frame}
+
+%diap
+\begin{frame}{Définition des paramètres structuraux (\textbf{Gogu, [2008]})}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{12cm}(0.4cm, 1.9cm)
+\begin{block}{Redondance $T$}
+%- \textcolor{teal}{Redondance opérationnelle} : différence entre la mobilité du mécanisme et la mobilité nécessaire pour réaliser la tâche\\
+\textcolor{black}{\textbf{Redondance structurelle}} : différence entre la dimension de l’espace articulaire et la dimension de  l’espace opérationnel d’un mécanisme\\
+\hspace{4.5cm}$T = M - S$\\
+\hspace{0.5cm}$\Rightarrow T_m$ : redondance du m-bot\\
+\hspace{0.5cm}$\Rightarrow T_p$ : redondance du p-bot
+\end{block}
+\end{textblock*}
+
+\begin{textblock*}{12cm}(0.4cm, 5.25cm)
+\begin{block}{Degré d'hyperstatisme $N$}
+Différence entre le nombre maximal de paramètres des liaisons qui peuvent perdre leur indépendance dans la boucle fermée, et le nombre de paramètres des liaisons qui perdent vraiment leur indépendance dans la boucle fermée\\
+\hspace{4.5cm}$N = 6q - r$\\
+$q$ : Nombre des boucles fermées dans la chaîne cinématique représentant le mécanisme\\
+$r$ : Nombre des paramètres qui perdent leur indépendance dans la boucle fermée du mécanisme\\
+\hspace{0.5cm}$\Rightarrow N_m$ : degré d'hyperstatisme du m-bot\\
+\hspace{0.5cm}$\Rightarrow N_p$ : degré d'hyperstatisme du p-bot
+\end{block}
+\end{textblock*}
+}
+\end{frame}
+
+
+%-----------------------------------------------------
+%------------------subsection------------------------
+\subsection{Recherche de liaison équivalente du contact roue-sol}
+%------------------------------------------------------
+%diap
+\begin{frame}{Description des mouvements d'une roue torique}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{6cm}(0.2cm, 5.5cm)
+%\begin{textblock*}{}
+- Mouvement d’avance ($\boldsymbol{v}_x$) : \textcolor{vert}{\textbf{\CheckedBox}} \\
+- Glissement latéral ($\boldsymbol{v}_y$) : \textcolor{red}{\textbf{\XBox}} \\
+- Décollage du sol ($\boldsymbol{v}_z$) : \textcolor{red}{\textbf{\XBox}} \\
+\end{textblock*}
+\begin{textblock*}{6.5cm}(6cm, 5.5cm)
+- Basculement latéral en carrossage ($\boldsymbol{\omega}_x$) : \textcolor{vert}{\textbf{\CheckedBox}}\\
+- Roulement de la roue ($\boldsymbol{\omega}_y$) : reliée à $\boldsymbol{v}_x$ par \textbf{RSG}\\ 
+\hspace{0.25cm}\textbf{RSG} : condition de Roulement Sans Glissement\\ 
+- Rotation verticale de braquage ($\boldsymbol{\omega}_z$) : \textcolor{vert}{\textbf{\CheckedBox}}
+\end{textblock*}
+\only<2>{
+\begin{textblock*}{12cm}(0.4cm, 6.75cm)
+\begin{block}{Description retenue}
+Base de l'espace vectoriel des vitesses relatives représentant le contact roue sol\\
+\hspace{4.25cm}$(R_{W/G}) = (R_{C_t}) = (\boldsymbol{v}_x, \boldsymbol{\omega}_x, \boldsymbol{\omega}_z)$\\
+\end{block}
+{\scriptsize
+$(R)$ : base de l'espace vectoriel des vitesses entre deux solides\\
+$W$ : roue, $G$ : Sol, $C_t$ : liaison représentant le contact roue-sol\\
+}
+\end{textblock*}
+}
+}
+
+% Figures
+\begin{textblock*}{12cm}(0.4cm, 2.1cm)
+\centering
+\includegraphics[width=0.75\textwidth]{Chapitre2_Roues_Rotations}
+\end{textblock*}
+%\begin{textblock*}{12cm}(0.4cm, 4.75cm)
+%\centering
+%\tiny{Description des mouvements d'une roue torique}
+%\end{textblock*}
+
+\end{frame}
+
+%-----------------------------------------------------
+%------------------subsection------------------------
+\subsection{Calcul des paramètres structuraux des manipulateurs mobiles}
+%------------------------------------------------------
+%diap
+\begin{frame}{m-bot avec deux contacts au sol}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{
+\scriptsize
+\begin{textblock*}{6cm}(0.2cm, 6cm)
+\textcolor{vert}{\textbf{Chaîne de locomotion $l_1$}} : \\
+- Chaîne cinématique fermée
+
+\end{textblock*}
+
+\only<2->{
+\begin{textblock*}{6cm}(0.2cm, 7cm)
+\textcolor{red}{\textbf{Chaîne de manipulation}} : \\
+- Chaîne cinématique ouverte
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{8cm}(0.4cm, 7.5cm)
+\begin{block}{Calcul des paramètres structuraux des m-bots}
+\begin{itemize}
+\item 1ère étape : Calcul pour la partie locomotion
+\item 2ère étape : Calcul pour le m-bot
+\end{itemize}
+\end{block}
+\end{textblock*}
+}
+}
+
+% Figures
+\begin{textblock*}{5cm}(4.5cm, 2.25cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Diagramme_Structurel_m-bot_1}
+\includegraphics<2->[width=\textwidth]{Diagramme_Structurel_m-bot_2}
+\end{textblock*}
+\begin{textblock*}{5cm}(4.5cm, 6.25cm)
+\centering
+\tiny{Diagramme structurel du m-bot}
+\end{textblock*}
+
+\begin{textblock*}{6cm}(8cm, 2.25cm)
+\centering
+\includegraphics<1>[width=3cm]{Graphe_de_Liaison_m-bot_1}
+\includegraphics<2->[width=3cm]{Graphe_de_Liaison_m-bot_2}
+\end{textblock*}
+\begin{textblock*}{6cm}(8cm, 9cm)
+\centering
+\tiny{Graphe de liaison}
+\end{textblock*}
+
+\end{frame}
+
+%diap
+\begin{frame}{m-bot avec deux contacts au sol - Calcul pour la partie locomotion}
+\begin{textblock*}{12.2cm}(0.2cm, 2.15cm)
+\justifying
+\textcolor{vert}{\textbf{Structure de la chaîne de locomotion $l_{1}$}} : 2 jambes simples $l_{11}$ et $l_{12}$
+\end{textblock*}
+
+\only<2->{
+\begin{textblock*}{9.25cm}(0.2cm, 2.75cm)
+\textcolor{violet}{\textbf{Connectivité $S_{l_1}$}} : $S_{l_1} = dim(R_{l_1}) = dim(R_{l_{11}} \cap R_{l_{12}})$ \\%, avec : $dim(R_{l_{11}}) = dim(R_{l_{12}}) = 4$\\
+\justifying
+\textit{S’il existe plusieurs possibilités de choix des bases pour les espaces vectoriels $R_{l_{11}}$ et $R_{l_{12}}$ , elles sont choisies afin d’obtenir la valeur minimale de la connectivité.} \\
+\hspace{4cm}\textcolor{violet}{$\boxed{S_{l_1} = dim(R_{l_1}) = 2}$}
+\end{textblock*}
+}
+
+\only<3->{
+\begin{textblock*}{9.25cm}(0.2cm, 5.5cm)
+\textcolor{teal}{\textbf{Mobilité $M_{l_1}$}} : $M_{l_1} = \sum^{p_{l_1}}_{i=1}f_i - r_{l_1}$\\
+avec : $r_{l_1} = S_{l_{11}} + S_{l_{12}} - S_{l_1}$, et $S_{l_{11}}= S_{l_{12}} = 4 \Rightarrow r_{l_1} = 6$ \\
+\hspace{4cm}\textcolor{teal}{$\boxed{M_{l_1} = 2}$}
+\end{textblock*}
+}
+
+\only<4->{
+\begin{textblock*}{9.25cm}(0.2cm, 7.5cm)
+\textcolor{orange}{\textbf{Redondance $T_{l_1}$}} : $T_{l_1} = M_{l_1} - S_{l_1}$
+\hspace{1cm}\textcolor{orange}{$\boxed{T_{l_1} = 0}$}
+\end{textblock*}
+}
+
+\only<5->{
+\begin{textblock*}{12cm}(0.2cm, 8.5cm)
+\textcolor{vert}{\textbf{Degré d'hyperstatisme $N_{l_1}$}} : $N_{l_1} = 6q - r_{l_1}$
+\hspace{1cm}\textcolor{vert}{$\boxed{N_{l_1} = 0}$}
+\end{textblock*}
+}
+
+% Figure
+\begin{textblock*}{6cm}(8.25cm, 2.55cm)
+\centering
+\includegraphics[width=3cm]{AnnexeB_Chaine_Cinematique_2_Roues}
+\end{textblock*}
+\begin{textblock*}{3cm}(9.75cm, 7.75cm)
+\centering
+\tiny{Graphe de liaison de la locomotion $l_1$}
+\end{textblock*}
+
+\end{frame}
+
+%diap
+\begin{frame}{m-bot avec deux contacts au sol - Calcul pour le m-bot}
+\begin{textblock*}{12.2cm}(0.2cm, 2.15cm)
+\justifying
+\textcolor{vert}{\textbf{Structure de la chaîne cinématique du m-bot}} : 1 jambe complexe
+\end{textblock*}
+
+
+\only<2->{
+\begin{textblock*}{9.25cm}(0.2cm, 2.75cm)
+\textcolor{violet}{\textbf{Connectivité $S_{m}$}} : $S_m = dim(R_m) = dim(R_{H/G}) $ \\%, avec : $dim(R_{l_{11}}) = dim(R_{l_{12}}) = 4$\\
+\justifying
+- Structure cinématique ouverte $\Rightarrow S_m = dim(R_{l_1} \cup R_{manip})$\\
+- Connectivité composée : $S_m = S_{l_1} + S_{manip} - S_{com}$\\
+\hspace{4cm}\textcolor{violet}{$\boxed{S_m = 2 + S_{manip} - S_{com}}$}
+\end{textblock*}
+}
+
+\only<3->{
+\begin{textblock*}{9.25cm}(0.2cm, 5.5cm)
+\textcolor{teal}{\textbf{Mobilité $M_{m}$}} : $M_{l_1} = \sum^{p_{l_1}}_{i=1}f_i - r_{l_1}$\\
+- Structure cinématique ouverte $\Rightarrow M_m = M_{l_1} + M_{manip}$ \\
+$M_{manip} = \sum^{p_{manip}}_{i=1}f_i \Rightarrow$ \textcolor{teal}{$\boxed{M_{m} = 2 + M_{manip}}$}
+\end{textblock*}
+}
+
+\only<4->{
+\begin{textblock*}{9.25cm}(0.2cm, 7.5cm)
+\textcolor{orange}{\textbf{Redondance $T_{m}$}} : %$T_{l_1} = M_{l_1} - S_{l_1}$
+\textcolor{orange}{$\boxed{T_m = M_m - S_m}$}
+\end{textblock*}
+}
+
+\only<5->{
+\begin{textblock*}{12cm}(0.2cm, 8.5cm)
+\textcolor{vert}{\textbf{Degré d'hyperstatisme $N_{m}$}} : $N_m = N_{l_1}$
+\hspace{1cm}\textcolor{vert}{$\boxed{N_m = 0}$}
+\end{textblock*}
+}
+
+% Figure
+\begin{textblock*}{6cm}(8.25cm, 2.55cm)
+\centering
+\includegraphics[width=2.5cm]{Graphe_de_Liaison_m-bot_2}
+\end{textblock*}
+\begin{textblock*}{3cm}(9.75cm, 8.25cm)
+\centering
+\tiny{Graphe de liaison du m-bot}
+\end{textblock*}
+\end{frame}
+
+
+%diap
+%\begin{frame}{m-bot avec trois contacts au sol}
+%\begin{textblock*}{9cm}(0.2cm, 2.15cm)
+%\textbf{Structure de la chaîne cinématique $l_{2}$} :\\ complexe avec trois jambes simples $l_{21}$, $l_{22}$ et $l_{23}$\\
+%\end{textblock*}
+%
+%\begin{textblock*}{7.5cm}(0.2cm, 5cm)
+%\begin{block}{}
+%\justifying
+%Les spécificités de l’environnement et de la tâche ne demandent pas un fonctionnement en p-bot pour ce mode de locomotion
+%\end{block}
+%\end{textblock*}
+%
+%% Figure
+%\begin{textblock*}{6cm}(7.5cm, 2.15cm)
+%\centering
+%\includegraphics[width=4.55cm]{AnnexeB_Chaine_Cinematique_3_Roues}
+%\end{textblock*}
+%\begin{textblock*}{4cm}(8.5cm, 8.5cm)
+%\centering
+%\tiny{Graphe de liaison du m-bot avec trois points de contacts au sol}
+%\end{textblock*}
+%\end{frame}
+
+%-----------------------------------------------------
+%diap
+\begin{frame}{p-bot en configuration co-manipulation de la charge}
+\begin{textblock*}{10cm}(0.2cm, 7.15cm)
+\only<3->{\textbf{Structure de la chaîne cinématique du p-bot} :\\ Fermée avec deux jambes complexes} \only<4->{\textcolor{blue}{$G_{1}^p$}} \only<5>{et \textcolor{red}{$G_{2}^p$}}
+\end{textblock*}
+
+{\scriptsize
+\only<5->{
+\begin{textblock*}{7.75cm}(0.2cm, 7.85cm)
+\begin{alertblock}{}
+\justifying
+- Structure cinématique ressemblante à la locomotion $l_1$\\
+- Utilisation des éléments déjà calculés pour les m-bots\\
+\end{alertblock}
+\end{textblock*}
+}
+}
+
+% Figures
+\begin{textblock*}{7cm}(1cm, 2.25cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Diagramme_Structurel_p-bot_Co-manipulation_1}
+\includegraphics<2>[width=\textwidth]{Diagramme_Structurel_p-bot_Co-manipulation_2}
+\includegraphics<3>[width=\textwidth]{Diagramme_Structurel_p-bot_Co-manipulation_3}
+\includegraphics<4>[width=\textwidth]{Diagramme_Structurel_p-bot_Co-manipulation_4}
+\includegraphics<5>[width=\textwidth]{Diagramme_Structurel_p-bot_Co-manipulation_5}
+\end{textblock*}
+\begin{textblock*}{7cm}(1cm, 6.75cm)
+\centering
+\tiny{Diagramme structurel du p-bot en co-manipulation}
+\end{textblock*}
+
+\begin{textblock*}{6cm}(7.75cm, 2.25cm)
+\centering
+\includegraphics<1>[width=4cm]{Graphe_de_Liaison_p-bot_Co-manipulation_1}
+\includegraphics<2>[width=4cm]{Graphe_de_Liaison_p-bot_Co-manipulation_2}
+\includegraphics<3>[width=4cm]{Graphe_de_Liaison_p-bot_Co-manipulation_3}
+\includegraphics<4>[width=4cm]{Graphe_de_Liaison_p-bot_Co-manipulation_4}
+\includegraphics<5>[width=4cm]{Graphe_de_Liaison_p-bot_Co-manipulation_5}
+\end{textblock*}
+\begin{textblock*}{6cm}(7.75cm, 9cm)
+\centering
+\tiny{Graphe de liaison}
+\end{textblock*}
+
+\end{frame}
+
+%diap
+\begin{frame}{p-bot en configuration connexion}
+\begin{textblock*}{10cm}(0.2cm, 7.15cm)
+\only<5>{\textbf{Structure de la chaîne cinématique du p-bot} :\\ Ouverte avec une jambe complexe \textcolor{magenta}{$l_3$}}
+\end{textblock*}
+
+{\scriptsize
+\only<5>{
+\begin{textblock*}{7.75cm}(0.2cm, 7.85cm)
+\begin{alertblock}{}
+\justifying
+- Structure cinématique ressemblante au m-bot\\
+- Utilisation des éléments déjà calculés pour les m-bots
+\end{alertblock}
+\end{textblock*}
+}
+}
+% Figures
+\begin{textblock*}{7cm}(1cm, 3.15cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Diagramme_Structurel_p-bot_Connexion_1}
+\includegraphics<2>[width=\textwidth]{Diagramme_Structurel_p-bot_Connexion_2}
+\includegraphics<3>[width=\textwidth]{Diagramme_Structurel_p-bot_Connexion_3}
+\includegraphics<4->[width=\textwidth]{Diagramme_Structurel_p-bot_Connexion_4}
+\end{textblock*}
+\begin{textblock*}{7cm}(1cm, 6.75cm)
+\centering
+\tiny{Diagramme structurel du p-bot en connexion}
+\end{textblock*}
+
+\begin{textblock*}{6cm}(7.75cm, 2.25cm)
+\centering
+\includegraphics<1>[width=3cm]{Graphe_de_Liaison_p-bot_Connexion_1}
+\includegraphics<2>[width=3cm]{Graphe_de_Liaison_p-bot_Connexion_2}
+\includegraphics<3>[width=3cm]{Graphe_de_Liaison_p-bot_Connexion_3}
+\includegraphics<4>[width=3cm]{Graphe_de_Liaison_p-bot_Connexion_4}
+\includegraphics<5>[width=3cm]{Graphe_de_Liaison_p-bot_Connexion_5}
+%\includegraphics<6>[width=3cm]{Graphe_de_Liaison_p-bot_Connexion_6}
+\end{textblock*}
+\begin{textblock*}{6cm}(7.5cm, 9cm)
+\centering
+\tiny{Graphe de liaison}
+\end{textblock*}
+\end{frame}
+
+%-----------------------------------------------------
+\section{Synthèse structurale des manipulateurs mobiles}
+\begin{frame}
+\small{\tableofcontents[currentsection,hideothersubsections]}
+\end{frame}
+
+%------------------subsection------------------------
+\subsection{Démarche de synthèse structurale}
+%------------------------------------------------------
+%diap
+\begin{frame}
+\begin{figure}
+\includegraphics<1>[width=\linewidth]{Methode_Synthese_Structurale_1}
+\includegraphics<2>[width=\linewidth]{Methode_Synthese_Structurale_2}
+\includegraphics<3>[width=\linewidth]{Methode_Synthese_Structurale_3}
+\includegraphics<4>[width=\linewidth]{Methode_Synthese_Structurale_4}
+\end{figure}
+\end{frame}
+%-----------------------------------------------------
+
+%------------------subsection------------------------
+\subsection{Synthèse structurale des m-bots}
+%------------------------------------------------------
+%diap
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{12cm}(0.4cm, 1.6cm)
+Vitesses nécessaires à la réalisation de la tâche 
+$\Rightarrow$ Locomotion dans le plan $(\boldsymbol{v}_x, \boldsymbol{v}_y, \boldsymbol{{\omega}_z})$ \\
+\hspace{5.9cm}$\Rightarrow$ Levage de la charge $(\boldsymbol{v}_z)$
+\end{textblock*}
+}
+{\small %criptsize
+\only<1>{
+\begin{textblock*}{12cm}(0.4cm, 2.5cm)
+\begin{block}{Paramètres structuraux désirés pour le m-bot}
+- \textbf{\textcolor{violet}{Connectivité désirée $S_m^{d}$:}} 
+Capacité à la réalisation de la tâche $\Rightarrow S_m^{d} \geq 4$\\
+
+- \textbf{\textcolor{teal}{Redondance désirée $T_m^d$:}} 
+Objectif de légèreté et de rigidité $\Rightarrow T_m^d = 0$\\
+
+- \textbf{\textcolor{orange}{Mobilité désirée $M_m^d$ :}}
+Déduite par la relation entre $S_m$ et $T_m$ $\Rightarrow M_m^{d} = S_m$\\
+
+- \textbf{\textcolor{vert}{Degré d'hyperstatisme désiré $N_m^d$ :}}
+Contact constant au sol $\Rightarrow N_m^d = 0$
+\end{block}
+\end{textblock*}
+}
+\only<2>{
+\begin{textblock*}{8cm}(0.4cm, 2.5cm)
+\begin{block}{Paramètres structuraux désirés pour le m-bot}
+- \textbf{\textcolor{violet}{Connectivité désirée $S_m^{d}\geq 4$}} \\
+
+- \textbf{\textcolor{teal}{Redondance désirée $T_m^d = 0$}} \\
+
+- \textbf{\textcolor{orange}{Mobilité désirée $M_m^d = S_m$}}\\
+
+- \textbf{\textcolor{vert}{Degré d'hyperstatisme désiré $N_m^d = 0$}}
+\end{block}
+\end{textblock*}
+}
+
+
+\only<2>{
+\begin{textblock*}{10cm}(0.4cm, 5.5cm)
+\textcolor{red}{\textbf{Objectif :}}\\ Obtenir un m-bot de connectivité entre $S_m^{min} = 4$ et $S_m^{max} = 6$\\
+%{\scriptsize
+- Analyse structurale $\Rightarrow S_{manip} = S_m - S_{l_1} + S_{com}$\\
+- Partie locomotion $\Rightarrow S_{l_1} = 2$\\
+- Redondance nulle $\Rightarrow S_{com} = 0$\\
+%}
+%\vspace{0.5cm}
+\end{textblock*}
+
+\begin{textblock*}{10cm}(6cm, 6.85cm)
+\textcolor{violet}{$\boxed{2 \leq S_{manip} \leq 4}$}
+\end{textblock*}
+
+}
+\only<2>{
+\begin{textblock*}{8cm}(0.2cm, 7.5cm)
+\begin{block}{Caractéristiques des liaisons}
+Prismatiques ou rotoïdes
+\end{block}
+\end{textblock*}
+}
+}
+
+
+
+% Figure
+\only<2>{
+\begin{textblock*}{6cm}(8cm, 2.25cm)
+\centering
+\includegraphics[width=2.9cm]{Graphe_de_Liaison_m-bot_2}
+\end{textblock*}
+\begin{textblock*}{6cm}(8cm, 9cm)
+\centering
+\tiny{Graphe de liaison d'un m-bot}
+\end{textblock*}
+}
+
+\end{frame}
+%-----------------------------------------------------
+
+
+
+%------------------subsection------------------------
+%\subsection{Caractérisation de la partie manipulation}
+%------------------------------------------------------
+%diap
+%\begin{frame}{} %{Nombre de liaisons dans la chaîne cinématique de manipulation}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\huge
+%\begin{textblock*}{1cm}(4.1cm, 2cm)
+%$\Rightarrow$
+%\end{textblock*}
+%}
+%
+%{\small
+%\begin{textblock*}{10cm}(0.4cm, 3cm)
+%\textcolor{red}{\textbf{But :}}\\ Obtenir un m-bot de connectivité entre $S_m^{min} = 4$ et $S_m^{max} = 6$\\
+%\hspace{2cm}\textcolor{violet}{$\boxed{2 \leq S_{manip} \leq 4}$}
+%\end{textblock*}
+%}
+%
+%{\scriptsize
+%\begin{textblock*}{3.5cm}(0.4cm, 1.4cm)
+%\begin{block}{Caractéristique définie} %{Structure du m-bot}
+%- Chaîne de locomotion
+%\end{block}
+%\end{textblock*}
+%
+%\begin{textblock*}{3.5cm}(5cm, 1.4cm)
+%\begin{exampleblock}{Caractéristique à définir} %{Structure du m-bot}
+%- Chaîne de manipulation
+%\end{exampleblock}
+%\end{textblock*}
+%
+%\begin{textblock*}{2cm}(6.85cm, 4.25cm)
+%$\Rightarrow \boxed{S_{manip}^{min} = 2}$\hspace{0.5cm}\\
+%\end{textblock*}
+%
+%\begin{textblock*}{9cm}(0.2cm, 4cm)
+%- Analyse structurale : $S_{manip}^{min} = S_m^{min} - S_{l_1} + S_{com}$\hspace{0.5cm}\\
+%- Partie locomotion : $S_{l_1} = 2$\hspace{0.5cm}\\
+%- Redondance nulle : $S_{com} = 0$\hspace{0.5cm}\\
+%\vspace{0.25cm}
+%- Analyse structurale : $S_{manip}^{max} = S_m^{max} - S_{l_1} + S_{com}$ \hspace{0.25cm}$\Rightarrow \boxed{S_{manip}^{max} = 4}$\\
+%\vspace{0.25cm}
+%Finalement : 
+%{\small\hspace{2cm}\textcolor{violet}{$\boxed{2 \leq S_{manip} \leq 4}$}}
+%\end{textblock*}
+%}
+%
+%{\small
+%\begin{textblock*}{9cm}(0.2cm, 7cm)
+%\begin{block}{Caractéristiques des liaisons}
+%Prismatiques ou rotoïdes
+%\end{block}
+%\end{textblock*}
+%}
+%
+%% Figure
+%\begin{textblock*}{6cm}(8cm, 2.25cm)
+%\centering
+%\includegraphics[width=3cm]{Chapitre2_Calcul_Parametres_Structuraux_mbot_Stabilisation_b}
+%\end{textblock*}
+%\begin{textblock*}{6cm}(8cm, 9cm)
+%\centering
+%\tiny{Graphe de liaison d'un m-bot}
+%\end{textblock*}
+%\end{frame}
+
+%-----------------------------------------------------
+%------------------subsection------------------------
+%\subsection{Synthèse structurale des m-bots}
+%------------------------------------------------------
+%diap
+%\begin{frame}{} %{Construction des chaînes cinématiques de manipulation à 2 liaisons}
+%\setbeamertemplate{blocks}[rounded=false][shadow=false]
+%{
+%\scriptsize
+%\begin{textblock*}{12cm}(0.4cm, 1.4cm)
+%\begin{block}{Chaînes cinématiques à deux liaisons}
+%Espace vectoriel des vitesses relatives de la chaîne cinématique représentant le m-bot : $R_m$\\
+%Base de l'espace vectoriel : $(R_m^{min}) = (\boldsymbol{v}_x, \boldsymbol{v}_y, \boldsymbol{v}_z, \boldsymbol{{\omega}_z})$\\
+%But de la synthèse structurale : avoir un m-bot qui a au minimum les vitesses de $(R_m^{min})$\\
+%Partir des bases possibles pour la chaîne cinématique de locomotion $l_1$, $(R_{l_1})_i, i = 1,...,4$
+%$(R_{l_1})_1 = (\boldsymbol{v}_x, \boldsymbol{\omega}_y)$, 
+%$(R_{l_1})_2 = (\boldsymbol{v}_x, \boldsymbol{\omega}_z)$, 
+%$(R_{l_1})_3 = (\boldsymbol{v}_x, \boldsymbol{v}_z)$, 
+%$(R_{l_1})_4 = (\boldsymbol{v}_x, \boldsymbol{v}_y)$.\\ 
+%%\begin{table}[h!]
+%%\renewcommand{\arraystretch}{1.5}	% Augmenter la hauteur des lignes
+%%\setlength{\tabcolsep}{0.1\linewidth}
+%%\centering
+%%%\resizebox{\linewidth}{!}{%
+%%\begin{tabular}{l r}
+%%\hline
+%%$(R_{l_1})_1 = (\boldsymbol{v}_x, \boldsymbol{\omega}_y)$ & $(R_{l_1})_3 = (\boldsymbol{v}_x, \boldsymbol{v}_z)$\\
+%%$(R_{l_1})_2 = (\boldsymbol{v}_x, \boldsymbol{\omega}_z)$ & $(R_{l_1})_4 = (\boldsymbol{v}_x, \boldsymbol{v}_y)$\\ 
+%%\hline 
+%%\end{tabular}
+%%%} 
+%%%\caption{Différentes possibilités d'écritures des bases $(R_{l_1})$ }
+%%\end{table}
+%
+%Pour $(R_m^{min})$ et $(R_{l_1})_1$ : Pas de base possible car $(R_{l_1})_1 \not\subset (R_m^{min})$\\
+%Pour $(R_m^{min})$ et $(R_{l_1})_2$ : Une base possible $(R^2_{manip})_1 = (\boldsymbol{v}_y, \boldsymbol{v}_z)$. D'autres bases peuvent être générées car une vitesse de rotation peut générer une vitesse de translation :\\
+%$(R^2_{manip})_1= (\boldsymbol{v}_y, \boldsymbol{v}_z)$,  
+%$(R^2_{manip})_2= (\boldsymbol{v}_y, \boldsymbol{\omega}_x)$, 
+%$(R^2_{manip})_3= (\boldsymbol{v}_y, \boldsymbol{\omega}_y)$, 
+%$(R^2_{manip})_4= (\boldsymbol{v}_z, \boldsymbol{\omega}_x)$, 
+%$(R^2_{manip})_5 = (\boldsymbol{v}_z, \boldsymbol{\omega}_z)$, 
+%$(R^2_{manip})_6 = (\boldsymbol{\omega}_x, \boldsymbol{\omega}_z)$, 
+%$(R^2_{manip})_7 = (\boldsymbol{\omega}_x, \boldsymbol{\omega}_y)$, 
+%$(R^2_{manip})_8 = (\boldsymbol{\omega}_y, \boldsymbol{\omega}_z)$.\\
+%Ces bases donnent lieu à des chaînes cinématiques en remplaçant une vitesse de translation avec une liaison prismatique et une vitesse de rotation par une liaison pivot.\\
+%$[L^2_{manip}]_1 = [P_y, P_z]$, 
+%$[L^2_{manip}]_2 = [P_y, R_x]$, 
+%$[L^2_{manip}]_3 = [P_y, R_y]$, 
+%$[L^2_{manip}]_4 = [P_z, R_x]$,
+%$[L^2_{manip}]_5 = [P_z, R_z]$, 
+%$[L^2_{manip}]_6 = [R_x, R_z]$, 
+%$[L^2_{manip}]_7 = [R_x, R_y]$, 
+%$[L^2_{manip}]_8 = [R_y, R_z]$, 
+%$[L^2_{manip}]_9 = [R_x, R_x]$. \\ 
+%En faisant la même chose pour les autres bases, on obtient : 
+%$[L^2_{manip}]_1 = [P_y, P_z]$, 
+%$[L^2_{manip}]_7 = [R_x, R_y]$, 
+%$[L^2_{manip}]_2 = [P_y, R_x]$, 
+%$[L^2_{manip}]_8 = [R_y, R_z]$, 
+%$[L^2_{manip}]_3 = [P_y, R_y]$, 
+%$[L^2_{manip}]_9 = [R_x, R_x]$, 
+%$[L^2_{manip}]_4 = [P_z, R_x]$, 
+%$[L^2_{manip}]_{10} = [P_y, R_z]$, 
+%$[L^2_{manip}]_5 = [P_z, R_z]$, 
+%$[L^2_{manip}]_{11} = [R_z, R_z]$, 
+%$[L^2_{manip}]_6 = [R_x, R_z]$.\\
+%
+%
+%%\begin{table}[h!]
+%%\renewcommand{\arraystretch}{1.5}	% Augmenter la hauteur des lignes
+%%\centering
+%%\setlength{\tabcolsep}{0.06\linewidth}
+%%%\resizebox{\linewidth}{!}{%
+%%\begin{tabular}{l r}
+%%\hline
+%%$(R^2_{manip})_1= (\boldsymbol{v}_y, \boldsymbol{v}_z)$ 	& $(R^2_{manip})_5 = (\boldsymbol{v}_z, \boldsymbol{\omega}_z)$\\ 
+%%$(R^2_{manip})_2= (\boldsymbol{v}_y, \boldsymbol{\omega}_x)$& $(R^2_{manip})_6 = (\boldsymbol{\omega}_x, \boldsymbol{\omega}_z)$\\ 
+%%$(R^2_{manip})_3= (\boldsymbol{v}_y, \boldsymbol{\omega}_y)$& $(R^2_{manip})_7 = (\boldsymbol{\omega}_x, \boldsymbol{\omega}_y)$\\ 
+%%$(R^2_{manip})_4= (\boldsymbol{v}_z, \boldsymbol{\omega}_x)$& $(R^2_{manip})_8 = (\boldsymbol{\omega}_y, \boldsymbol{\omega}_z)$\\ 
+%%\hline 
+%%\end{tabular}
+%%%} 
+%%%\caption{Les bases $(R^2_{manip})$ complétant $(R_{l_1})_2$ pour atteindre $(R^{min}_m)$}
+%%\end{table}
+%\hspace{2cm}\textbf{\textcolor{red}{$\blacktriangleright$}} Nombre de solutions : 11
+%\end{block}
+%\end{textblock*}
+%}
+%
+%
+%\end{frame}
+
+%diap
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{12cm}(0.4cm, 1.75cm)
+Partir des bases possible de la locomotion $l_1$, $(R_{l_1})_i, i = 1,...,4$, pour atteindre $(R_m)$ : 
+\hspace{0.75cm}$\boxed{(R_{l_1})_1 = (\boldsymbol{v}_x, \boldsymbol{\omega}_y)}$ 
+\hspace{0.75cm}$\boxed{(R_{l_1})_2 = (\boldsymbol{v}_x, \boldsymbol{\omega}_z)}$ 
+\hspace{0.75cm}$\boxed{(R_{l_1})_3 = (\boldsymbol{v}_x, \boldsymbol{v}_z)}$ 
+\hspace{0.75cm}$\boxed{(R_{l_1})_4 = (\boldsymbol{v}_x, \boldsymbol{v}_y)}$
+\end{textblock*}
+\only<2->{
+\begin{textblock*}{3.5cm}(0.2cm, 2.5cm)
+\begin{block}{Manipulateurs à 2 liaisons}
+$S_{manip} = 2$\\
+Une base possible :\\
+$\Rightarrow (R_m^{4}) = (\boldsymbol{v}_x, \boldsymbol{v}_y, \boldsymbol{v}_z, \boldsymbol{{\omega}_z})$\\
+\vspace{0.55cm}
+\textbf{\textcolor{magenta}{$\blacktriangleright$}} Nombre de solutions : 11
+\end{block}
+\end{textblock*}
+
+\begin{textblock*}{4cm}(4.05cm, 2.5cm)
+\begin{block}{Manipulateurs à 3 liaisons}
+$S_{manip} = 3$\\
+Deux bases possibles :\\
+$\Rightarrow (R_m^{5a}) = (\boldsymbol{v}_x, \boldsymbol{v}_y, \boldsymbol{v}_z, \boldsymbol{\omega}_x, \boldsymbol{\omega}_z)$ \\ 
+$\Rightarrow (R_m^{5b}) = (\boldsymbol{v}_x, \boldsymbol{v}_y, \boldsymbol{v}_z, \boldsymbol{\omega}_y, \boldsymbol{\omega}_z)$ \\
+\vspace{0.2cm}
+\textbf{\textcolor{magenta}{$\blacktriangleright$}} Nombre de solutions : 27
+\end{block}
+\end{textblock*}
+
+\begin{textblock*}{4.25cm}(8.4cm, 2.5cm)
+\begin{block}{Manipulateurs à 4 liaisons}
+$S_{manip} = 4$\\
+Une seule base possible :\\
+$\Rightarrow (R_m^6) = (\boldsymbol{v}_x, \boldsymbol{v}_y, \boldsymbol{v}_z, \boldsymbol{\omega}_x, \boldsymbol{\omega}_y, \boldsymbol{\omega}_z)$\\
+\vspace{0.55cm}
+\textbf{\textcolor{magenta}{$\blacktriangleright$}} Nombre de solutions : 17
+\end{block}
+\end{textblock*}
+
+
+{\small
+\begin{textblock*}{8cm}(2.4cm, 5.5cm)
+\centering
+\textbf{\textcolor{magenta}{$\blacktriangleright$}} Nombre total de solutions : 55
+\end{textblock*}
+}
+}
+
+\only<3>{
+\begin{textblock*}{12cm}(0.4cm, 5.75cm)
+\begin{block}{Filtrage des solutions des m-bots - partie manipulation}
+- Règle 1 : \textbf{Levage} de la caisse $\rightarrow$ Levage par la chaîne cinématique de manipulation\\
+\hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Solutions retenues :}} contenant $\boldsymbol{v}_z$ ou $\boldsymbol{\omega}_y$\\
+
+\vspace{0.25cm}
+- Règle 2 : \textbf{Orientation} de la caisse $\rightarrow$ Manipulation dans le plan sagittal\\
+\hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Solutions retenues :}} contenant  $\boldsymbol{v}_z$ ou $\boldsymbol{\omega}_y$\\
+
+\vspace{0.25cm}
+- Règle 3 : \textbf{Braquage} en mode p-bot $\rightarrow$ Assurer un braquage d'axe perpendiculaire au sol\\
+\hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Solutions retenues :}} pouvoir positionner une liaison pivot en $\boldsymbol{z}$\\
+\end{block}
+\end{textblock*}
+}
+}
+
+\end{frame}
+
+%%------------------subsection------------------------
+%\subsection{Filtrage des solutions des m-bots}
+%%------------------------------------------------------
+%%diap
+%\begin{frame}{Règles fonctionnelles de sélection}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{
+%\scriptsize
+%\begin{block}{Règle 1 : Levage de la caisse}
+%Le levage se fait par la chaîne cinématique de manipulation\\
+%Dans le plan $(xz)$ : se fait par $\boldsymbol{v}_z$ ou $\boldsymbol{\omega}_y$\\
+%Ne sélectionner que les solutions contenant ses vitesses
+%\end{block}
+%
+%\begin{block}{Règle 2 : Charge horizontale}
+%Risque de renversement du contenu des caisses\\
+%Le m-bot doit pouvoir manipuler dans son plan $(xz)$ :\\
+%- Trois pivots d'axe $\boldsymbol{\omega}_y$\\ 
+%- Deux pivots et une translation $\boldsymbol{v}_x$ ou $\boldsymbol{v}_z$
+%\end{block}
+%\begin{block}{Règle 3 : Braquage en mode p-bot}
+%Assurer un braquage sans ripage\\
+%Pouvoir positionner une liaison pivot en $\boldsymbol{z}$
+%\end{block}
+%}
+%\end{frame}
+
+%diap
+\begin{frame}{Solutions retenues après application des règles de sélection}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\scriptsize
+%\begin{textblock*}{2.8cm}(0.2cm, 1.9cm)
+%\begin{exampleblock}{Contraintes sur les paramètres structuraux}
+%- Connectivité :\\ \hspace{1cm}$S_m^d \geq 4$\\
+%- Mobilité :\\ \hspace{1cm}$M_m^d = S_m$\\
+%- Redondance :\\ \hspace{1cm}$T_m^d = 0$\\
+%- Degré d'hyperstatisme :\\ \hspace{1cm}$N_m^d = 0$ 
+%\end{exampleblock}
+%\end{textblock*}
+%}
+
+\begin{textblock*}{3cm}(1cm, 2.1cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre2_mbot_L_3_23}
+\end{textblock*}
+\begin{textblock*}{3cm}(0.5cm, 5.5cm)
+\small{\textit{m-bot}$^{L3-1}$}
+\end{textblock*}
+
+\begin{textblock*}{3cm}(5cm, 2.1cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre2_mbot_L_3_27}
+\end{textblock*}
+\begin{textblock*}{3cm}(4.5cm, 5.65cm)
+\small{\textit{m-bot}$^{L3-2}$}
+\end{textblock*}
+
+\begin{textblock*}{3cm}(9cm, 2.1cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre2_mbot_L_4_17}
+\end{textblock*}
+\begin{textblock*}{3cm}(8.75cm, 5.55cm)
+\small{\textit{m-bot}$^{L4}$}
+\end{textblock*}
+
+{\tiny
+\begin{textblock*}{12cm}(0.2cm, 6.25cm)
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.1}	% Augmenter la hauteur des lignes
+\setlength{\tabcolsep}{0.045\linewidth}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{|c|c|c|c|}
+\hline 					   & \textit{m-bot}$^{L3-1}$	&\textit{m-bot}$^{L3-2}$	& \textit{m-bot}$^{L4}$\\
+\hline Connectivité $S_m$  & 			5			&		5			   	& 			6		\\
+\hline Mobilité $M_m$	   & 			5			&		5			   	& 			6		  \\
+\hline Redondance $T_m$	   & 			0			&		0			   	& 			0		 \\
+\hline Degré d'hyperstatisme $N_m$ & 			0			&		0			   	& 			0		\\
+\hline 
+\end{tabular}
+}
+\end{table}
+\end{textblock*}
+}
+
+{\scriptsize
+\begin{textblock*}{8cm}(2.4cm, 8.25cm)
+\begin{alertblock}{}
+\centering
+\textbf{\textcolor{magenta}{$\blacktriangleright$}} Toutes les architectures respectent les contraintes
+\end{alertblock}
+\end{textblock*}
+}
+
+\end{frame}
+
+%diap
+%\begin{frame}{Permutations possibles de l'ordre des liaisons}
+%\begin{textblock*}{5cm}(1cm, 2.15cm)
+%\centering
+%\includegraphics[width=\textwidth]{Chapitre2_mbot_L_3_23}
+%\end{textblock*}
+%
+%$\rightarrow$
+%
+%\begin{textblock*}{5cm}(7cm, 2.15cm)
+%\centering
+%\includegraphics[width=\textwidth]{Chapitre4_Modelisation_Manipulateur_Mobile_New}
+%\end{textblock*}
+%
+%\end{frame}
+
+%diap
+%\begin{frame}{Vérification des paramètres structuraux des m-bots}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{
+%\scriptsize
+%\begin{exampleblock}{Contraintes sur les paramètres structuraux}
+%- Connectivité : $S_m^d \geq 4$\\
+%- Mobilité : $M_m^d = S_m$\\
+%- Redondance : $T_m^d = 0$\\
+%- Degré d'hyperstatisme : $N_m^d = 0$ 
+%\end{exampleblock}
+%
+%\begin{table}[h!]
+%\centering
+%\renewcommand{\arraystretch}{1.1}	% Augmenter la hauteur des lignes
+%\setlength{\tabcolsep}{0.045\linewidth}
+%\resizebox{\linewidth}{!}{%
+%\begin{tabular}{|c|c|c|c|}
+%\hline 					   & \textit{m-bot}$^{L3-23}$	&\textit{m-bot}$^{L3-27	}$	& \textit{m-bot}$^{L4-17}$\\
+%\hline Connectivité $S_m$  & 			5			&		5			   	& 			6		\\
+%\hline Mobilité $M_m$	   & 			5			&		5			   	& 			6		  \\
+%\hline Redondance $T_m$	   & 			0			&		0			   	& 			0		 \\
+%\hline Degré d'hyperstatisme $N_m$ & 			0			&		0			   	& 			0		\\
+%\hline 
+%\end{tabular}
+%}
+%\end{table}
+%
+%
+%\begin{alertblock}{}
+%\centering
+%\textbf{\textcolor{magenta}{$\blacktriangleright$}} Toutes les architectures respectent les contraintes
+%\end{alertblock}
+%}
+%\end{frame}
+
+%-----------------------------------------------------
+
+%------------------subsection------------------------
+\subsection{Synthèse structurale des p-bots}
+%------------------------------------------------------
+%diap
+\begin{frame}{Synthèse structurale des p-bots}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %criptsize
+%\begin{textblock*}{8cm}(0.2cm, 2.5cm)
+%- Pour chaque architecture de m-bots retenues\\ %(\textit{m-bot}$^{L3-23}$, \textit{m-bot}$^{L3-27	}$ et \textit{m-bot}$^{L4-17}$) : \\
+%\hspace{0.25cm}$\Rightarrow$ Associer les m-bots en co-manipulation ou connexion
+%\end{textblock*}
+
+\begin{textblock*}{12cm}(0.4cm, 2.1cm)
+\begin{block}{Paramètres structuraux désirés pour le p-bot}
+- \textbf{\textcolor{violet}{Connectivité désirée $S_p^{d}$:}} 
+Capacité à la réalisation de la tâche $\Rightarrow S_p^{d} \geq 4$\\
+
+- \textbf{\textcolor{teal}{Redondance désirée $T_p^d$:}} 
+Objectif de légèreté et de rigidité $\Rightarrow T_p^d \rightarrow 0$\\
+
+- \textbf{\textcolor{orange}{Mobilité désirée $M_p^d$ :}}
+Déduite par la relation entre $S_p$ et $T_p$ $\Rightarrow M_p^{d} \rightarrow S_p$\\
+
+- \textbf{\textcolor{vert}{Degré d'hyperstatisme désiré $N_p^d$ :}}
+Contact constant au sol $\Rightarrow N_p^d \rightarrow 0$
+\end{block}
+\end{textblock*}
+}
+
+% Figures
+\begin{textblock*}{5cm}(0.4cm, 5.5cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre2_Calcul_Parametres_Structuraux_pbot_Co-manipulation_a}
+\end{textblock*}
+\begin{textblock*}{5cm}(0.4cm, 8.7cm)
+\centering
+\tiny{Diagramme structurel du p-bot en co-manipulation}
+\end{textblock*}
+\begin{textblock*}{5cm}(7.6cm, 6cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre2_Calcul_Parametres_Structuraux_pbot_Connexion_a}
+\end{textblock*}
+\begin{textblock*}{5cm}(7.6cm, 8.7cm)
+\centering
+\tiny{Diagramme structurel du p-bot en connexion}
+\end{textblock*}
+%\begin{textblock*}{6cm}(7.75cm, 2.25cm)
+%\centering
+%\includegraphics[width=4cm]{Chapitre2_Calcul_Parametres_Structuraux_pbot_Co-manipulation_b}
+%\end{textblock*}
+%\begin{textblock*}{6cm}(7.75cm, 9cm)
+%\centering
+%\tiny{Graphe de liaison}
+%\end{textblock*}
+
+\end{frame}
+
+%diap
+\begin{frame}{Vérification des paramètres structuraux des p-bots}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %criptsize
+\begin{textblock*}{12cm}(0.2cm,2cm)
+\textbf{Paramètres structuraux des p-bots en co-manipulation :} 
+%- Connectivité : $S_p^{d} \geq 4$\\
+%- Mobilité : $M_p^{d}\rightarrow S_p$\\
+%- Redondance : $T_p^{d}\rightarrow 0$\\
+%- Degré d'hyperstatisme : $N_p^{d}\rightarrow 0$
+\end{textblock*}
+}
+
+{\tiny
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.4}	% Augmenter la hauteur des lignes
+\setlength{\tabcolsep}{0.035\linewidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{|c|c|c|c|}
+\hline 						  	        & \textit{p-bot}$^{L3-1}_{comanip}$	&\textit{p-bot}$^{L3-2}_{comanip}$	& \textit{p-bot}$^{L4}_{comanip}$\\
+\hline Connectivité $S_{p-comanip}$  	& 			5						&		5			   				& 			6						\\
+\hline Mobilité $M_{p-comanip}$	   		& 			5						&		5			   				& 			6						  \\
+\hline Redondance $T_{p-comanip}$	   	& 			0						&		0			  			 	& 			0						 \\
+\hline Degré d'hyperstatisme $N_{p-comanip}$ 	& 			\textcolor{red}{1}						&		\textcolor{red}{1}			   				& 			0						\\
+\hline 
+\end{tabular}
+}
+\end{table}
+
+
+{\small %criptsize
+\begin{textblock*}{12cm}(0.2cm,4.8cm)
+\textbf{Paramètres structuraux des p-bots en connexion :} 
+\end{textblock*}
+}
+
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.4}	% Augmenter la hauteur des lignes
+\setlength{\tabcolsep}{0.035\linewidth}
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{|c|c|c|c|}
+\hline 						  	        & \textit{p-bot}$^{L3-1}_{connex}$	&\textit{p-bot}$^{L3-2}_{connex}$	& \textit{p-bot}$^{L4}_{connex}$\\
+\hline Connectivité $S_{p-connex}$  	& 			5						&		5			   				& 			6						\\
+\hline Mobilité $M_{p-connex}$	   		& 			5						&		5			   				& 			6						  \\
+\hline Redondance $T_{p-connex}$	   	& 			0						&		0			  			 	& 			0						 \\
+\hline Degré d'hyperstatisme $N_{p-connex}$ 	& 			\textcolor{red}{1}						&		\textcolor{red}{1}			   				& 		0						\\
+\hline 
+\end{tabular}
+}
+\end{table}
+}
+
+{
+\scriptsize
+\begin{alertblock}{}
+\centering
+Toutes les architectures respectent les contraintes\\
+%\only<2>{
+\textbf{\textcolor{magenta}{$\blacktriangleright$}} Préférence pour l'architecture m-bot$^{L4}$ %}
+\end{alertblock}
+}
+\end{frame}
+
+%diap
+%\begin{frame}{Formation du p-bot en connexion}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{
+%\scriptsize
+%\begin{textblock*}{8cm}(0.2cm, 7.15cm)
+%Formation des p-bots par les m-bots retenus après la synthèse des m-bots\\
+%Trois p-bots possibles :  \textit{p-bot}$^{L3-23}_{connex}$, \textit{p-bot}$^{L3-27}_{connex}$ et \textit{p-bot}$^{L4-17}_{connex}$\\
+%Calcul des paramètres structuraux présenté dans l'analyse structurale
+%\end{textblock*}
+%}
+%% Figures
+%\begin{textblock*}{7cm}(1cm, 3.15cm)
+%\centering
+%\includegraphics[width=\textwidth]{Chapitre2_Calcul_Parametres_Structuraux_pbot_Connexion_a}
+%\end{textblock*}
+%\begin{textblock*}{7cm}(1cm, 6.75cm)
+%\centering
+%\tiny{Diagramme structurel du m-bot}
+%\end{textblock*}
+%
+%\begin{textblock*}{6cm}(7.75cm, 2.25cm)
+%\centering
+%\includegraphics[width=3cm]{Chapitre2_Calcul_Parametres_Structuraux_pbot_Connexion_b}
+%\end{textblock*}
+%\begin{textblock*}{6cm}(7.5cm, 9cm)
+%\centering
+%\tiny{Graphe de liaison}
+%\end{textblock*}
+%\end{frame}
+
+%diap
+%\begin{frame}{Vérification des paramètres structuraux des p-bots en connexion}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{
+%\scriptsize
+%\begin{exampleblock}{Contraintes sur les paramètres structuraux des p-bots}
+%- Connectivité : $S_p^{d} \geq 4$\\
+%- Mobilité : $M_p^{d}\rightarrow S_p$\\
+%- Redondance : $T_p^{d}\rightarrow 0$\\
+%- Degré d'hyperstatisme : $N_p^{d}\rightarrow 0$
+%\end{exampleblock}
+%}
+%\begin{table}[h!]
+%\renewcommand{\arraystretch}{1.4}	% Augmenter la hauteur des lignes
+%\setlength{\tabcolsep}{0.035\linewidth}
+%\centering
+%\resizebox{\linewidth}{!}{%
+%\begin{tabular}{|c|c|c|c|}
+%\hline 						  	        & \textit{p-bot}$^{L3-23}_{connex}$	&\textit{p-bot}$^{L3-27}_{connex}$	& \textit{p-bot}$^{L4-17}_{connex}$\\
+%\hline Connectivité $S_{p-connex}$  	& 			5						&		5			   				& 			6						\\
+%\hline Mobilité $M_{p-connex}$	   		& 			5						&		5			   				& 			6						  \\
+%\hline Redondance $T_{p-connex}$	   	& 			0						&		0			  			 	& 			0						 \\
+%\hline Degré d'hyperstatisme $N_{p-connex}$ 	& 			1						&		1			   				& 			0						\\
+%\hline 
+%\end{tabular}
+%}
+%\end{table}
+%
+%{
+%\scriptsize
+%\begin{alertblock}{}
+%\centering
+%Toutes les architectures respectent les contraintes\\
+%\textbf{\textcolor{magenta}{$\blacktriangleright$}} Préférence pour l'architecture m-bot$^{L4-17}$
+%\end{alertblock}
+%}
+%\end{frame}
+
+%-----------------------------------------------------
+
+\section{Modélisation et commande des manipulateurs mobiles}
+\begin{frame}
+\small{\tableofcontents[currentsection,hideothersubsections]}
+\end{frame}
+%------------------subsection------------------------
+\subsection{Modélisation des MMs}
+%------------------------------------------------------
+%diap
+\begin{frame} %{Modélisation de la chaîne cinématique de locomotion}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{
+\scriptsize
+\begin{textblock*}{12cm}(0.4cm, 6.15cm)
+\begin{block}{Modélisation de la chaîne cinématique de locomotion}
+ Modélisation cinématique avec condition de roulement sans glissement
+\begin{equation*}
+  \left[
+  \begin{matrix}
+  \dot{x}_O \\
+  \dot{y}_O \\
+  \dot{\varphi}
+  \end{matrix}
+  \right]
+  =
+  \left[
+   \begin{matrix}
+    \frac{r}{2}\cos\varphi   & \frac{r}{2}\cos\varphi\\
+    \frac{r}{2}\sin\varphi  & -\frac{r}{2}\sin\varphi\\
+    \frac{r}{v} 			   & -\frac{r}{v}
+   \end{matrix}
+  \right]
+   .
+  \left[
+   \begin{matrix}
+    \dot{\omega}_d \\
+    \dot{\omega}_g
+   \end{matrix}
+  \right]
+ \end{equation*}
+\end{block}
+\end{textblock*}
+}
+
+
+% Figure
+\begin{textblock*}{2.85cm}(0.2cm, 1.25cm)
+\flushleft
+\includegraphics[width=\textwidth]{Chapitre4_Modelisation_Manipulateur_Mobile_New}
+\end{textblock*}
+\begin{textblock*}{3cm}(0.2cm, 5.75cm)
+\centering
+\tiny{Manipulateur mobile unitaire retenu : m-bot$^{L4}$}
+\end{textblock*}
+
+\begin{textblock*}{2.75cm}(3cm, 1.75cm)
+\centering
+\includegraphics[width=2.75cm]{Chapitre4_Modelisation_Locomotion_CAO}
+\end{textblock*}
+\begin{textblock*}{5.25cm}(3cm, 5.75cm)
+\centering
+\tiny{Chaîne cinématique de locomotion}
+\end{textblock*}
+
+\begin{textblock*}{2.25cm}(6cm, 1.75cm)
+\centering
+\includegraphics[width=\textwidth]{AnnexeB_Chaine_Cinematique_2_Roues}
+\end{textblock*}
+%\begin{textblock*}{4cm}(8.6cm, 5.75cm)
+%\centering
+%\tiny{Chaîne cinématique de manipulation}
+%\end{textblock*}
+
+\begin{textblock*}{4cm}(8.75cm, 1.75cm)
+\centering
+\includegraphics[width=4cm]{Chapitre4_Modelisation_Locomotion_Dessus}
+\end{textblock*}
+\begin{textblock*}{3cm}(9.5cm, 5.75cm)
+\centering
+\tiny{Vue de dessus de la chaîne cinématique de locomotion}
+\end{textblock*}
+
+\end{frame}
+
+%diap
+\begin{frame}{Modélisation de la chaîne cinématique manipulation}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{
+\scriptsize
+\begin{textblock*}{6cm}(0.2cm, 2.15cm)
+\centering{Paramétrage \textit{Denavit-Hartenberg}}\\ 
+\begin{tabular}{| c | c |  c |  c |  c |  c |  c | }
+\hline
+Point	&$i$ & $\sigma_i$	& $\alpha_i$ & $d_i$ & $\theta_i$ & $r_i$ \\
+\hline 
+%\multirow{3}{*}{\rotatebox{90}{Partie} \rotatebox{90}{locomotion}} 
+% && 1 &           0        &     0      &   0   & $\theta_G$ &   0        \\
+% && 2 &           1        &$+\pi/2$    &   0   &     0      &   $r_L$    \\
+% && 3 &           0        &$-\pi/2$    &   0   & $\theta_L$ &   $R$    	 \\
+%\hline
+%\multirow{6}{*}{\rotatebox{90}{Partie} \rotatebox{90}{manipulation}} 
+ $O$	& 1 &    0        &$+\pi/2$    &   0   &    $\theta_0$   &   0    \\
+ $A$	& 2 &    0        &$-\pi/2$	   &   0   &    $\theta_1$   &   $h$    \\
+ $B$	& 3 &    0        &$+\pi/2$    &$l_1$  &    $\theta_2$   &   0    \\
+ $C$	& 4 &    0        &     0      &$l_2$  &    $\theta_3$   &   0    \\
+ $D$	& 5 &    0        &$-\pi/2$	   &$l_3$  &    $\theta_4$   &   $l_4$    \\
+\hline
+\end{tabular}\\
+\vspace{0.25cm}
+Vecteur des coordonnées opérationnelles par rapport au point $O$ :\\
+$X_H = [x_H\ y_H\ z_H\ \beta_y\ \beta_z]^T$\\
+
+\vspace{0.25cm}
+Vecteur des coordonnées articulaires de la partie manipulation :\\
+$\Theta_M = [\theta_0\ \theta_1\ \theta_2\ \theta_3\ \theta_4]^T$
+\end{textblock*}
+
+
+\begin{textblock*}{6cm}(0.2cm, 7.25cm)
+\begin{block}{Modélisation géométrique}
+Modèle géométrique direct : 
+$X_H = f_{MGD}(\Theta_M)$\\
+Modèle géométrique inverse : 
+$\Theta_M = f_{MGI}(X_H)$
+\end{block}
+\end{textblock*}
+
+
+\begin{textblock*}{6cm}(6.6cm, 7.25cm)
+\begin{block}{Modélisation cinématique}
+$\dot{X}_H	 = J(\Theta)\dot{\Theta}_M$
+\end{block}
+\end{textblock*}
+}
+
+
+% Figure
+\begin{textblock*}{6cm}(6.75cm, 2.25cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Representation_Cinematique_m-bot_1}
+\includegraphics<2>[width=\textwidth]{Representation_Cinematique_m-bot_2}
+\end{textblock*}
+\begin{textblock*}{6cm}(6.75cm, 7cm)
+\centering
+\tiny{Représentation cinématique du m-bot}
+\end{textblock*}
+
+\end{frame}
+
+%diap
+\begin{frame}{Modélisation simplifiée des manipulateurs mobiles}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{
+\scriptsize
+\begin{textblock*}{6.5cm}(0.4cm, 2cm)
+\begin{block}{Contraintes sur le m-bot}
+- Rotation dans le \textbf{plan du sol}\\
+\hspace{0.5cm}$\Rightarrow$ Assurée par la \textcolor{blue}{\textbf{partie locomotion}}\\
+\vspace{0.25cm}
+- Manipulation dans le \textbf{plan sagittal} \\
+\hspace{0.5cm}$\Rightarrow$ \textcolor{blue}{\textbf{Blocage}} des liaisons  \only<1>{$\theta_1$ et $\theta_4$}\only<2->{\textcolor{orange}{$\theta_1$} et \textcolor{orange}{$\theta_4$}}
+\end{block} 
+\end{textblock*}
+
+\begin{textblock*}{6.5cm}(0.4cm, 5.25cm)
+\begin{block}{Contraintes sur le p-bot en co-manipulation}
+- Réalisation de la tâche en \textbf{deux phases} ~:\\
+\hspace{0.5cm}1- \textcolor{blue}{\textbf{Levage}} dans le plan sagittal\\
+\hspace{0.5cm}2- \textcolor{blue}{\textbf{Orientation}} des m-bots dans le plan du sol\\
+\vspace{0.25cm}
+- Capacité de \textbf{rotation dans le plan du sol}\\
+\hspace{0.5cm}$\Rightarrow$ \only<1-2>{$\theta_0 = 0$ et $\theta_H = 0$}\only<3->{\textcolor{blue}{$\theta_0 = 0$} et \textcolor{magenta}{$\theta_H = 0$}}\\
+\vspace{0.25cm}
+- Condition de \textbf{maintien horizontal de la charge} \\
+\hspace{0.5cm}$\Rightarrow$ \only<1-3>{$\theta_2 + \theta_3 =  \frac{\pi}{2}$}\only<4->{\textcolor{teal}{$\theta_2 + \theta_3 =  \frac{\pi}{2}$}} 
+\end{block}
+\end{textblock*}
+}
+
+% Figure
+\begin{textblock*}{4.5cm}(8.1cm, 2.1cm)
+\centering
+\includegraphics<1>[width=3cm]{Modelisation_Geometrique_m-bot_1}
+\includegraphics<2>[width=3cm]{Modelisation_Geometrique_m-bot_2}
+\includegraphics<3>[width=3cm]{Modelisation_Geometrique_m-bot_3}
+\includegraphics<4>[width=3cm]{Modelisation_Geometrique_m-bot_4}
+\end{textblock*}
+\begin{textblock*}{4.5cm}(8.1cm, 5.5cm)
+\centering
+\tiny{Vue de côté du m-bot}
+\end{textblock*}
+
+
+\begin{textblock*}{4.5cm}(8.1cm, 5.75cm)
+\centering
+\includegraphics<1-2>[width=\textwidth]{Modelisation_Geometrique_p-bot_1}
+\includegraphics<3->[width=\textwidth]{Modelisation_Geometrique_p-bot_2}
+\end{textblock*}
+\begin{textblock*}{4.5cm}(8.1cm, 9cm)
+\centering
+\tiny{Modélisation géométrique du p-bot}
+\end{textblock*}
+
+\end{frame}
+
+%-----------------------------------------------------
+%------------------subsection------------------------
+\subsection{Synthèse dimensionnelle des MMs}
+%------------------------------------------------------
+%diap
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{10cm}(0.4cm, 1.7cm)
+{\small \textcolor{red}{\textbf{Objectif :}} Réaliser un démonstrateur à petite échelle}
+%\begin{block}{Contraintes liées à l'espace de travail}
+%- Pouvoir prendre la caisse au sol $\Rightarrow z_{H_l}$\\
+%- Pouvoir déposer la caisse sur l'étagère $\Rightarrow z_{H_d}$
+%\end{block}
+\end{textblock*}
+
+%\begin{textblock*}{7.25cm}(0.2cm, 3.6cm)
+%\begin{block}{Contraintes liées à la conception mécanique des MMs}
+%- Choix des actionneurs $\Rightarrow$ Longueur minimale des pièces 
+%\end{block}
+%\end{textblock*}
+
+\begin{textblock*}{6.5cm}(0.4cm, 2cm)
+\begin{block}{Contraintes sur le m-bot}
+- Pouvoir \textbf{prendre la caisse} au sol\\
+\hspace{0.5cm}$\Rightarrow$ Définition de $z_{H_l}$\\ % = r - (h-l_1)\cos(\theta_{0_{max}}) + l_2(1-\cos(\theta_{0_{max}} + \theta_2))$
+\vspace{0.25cm}
+- Pouvoir \textbf{déposer la caisse} sur l'étagère\\ 
+\hspace{0.5cm}$\Rightarrow$ Définition de $z_{H_d}$\\ % = (h - l_1)\cos(\theta_0) - l_2\cos(\theta_0 + \theta_2)$\\
+\vspace{0.25cm}
+- \textbf{Enjamber} la caisse\\ 
+\hspace{0.5cm}$\Rightarrow$ $v>la_{caisse}$ et $h>h_{caisse}$\\ % + \varepsilon_v$ et $h + r > h_{caisse} + \varepsilon_h$\\
+\end{block}
+\end{textblock*}
+
+\only<3>{
+\begin{textblock*}{6.5cm}(0.4cm, 6cm) %7.625
+\begin{block}{Contraintes sur le p-bot en co-manipulation}
+- Pouvoir \textbf{déposer la caisse} sur l'étagère\\
+\hspace{0.5cm}$\Rightarrow$ Relation entre $lo_{ra}$ et $l_2, l_3$ % $= (l_1 + l_2\sin(\theta_1) + l_3)\cos(\theta_c) $
+\end{block}
+\end{textblock*}
+}
+}
+
+% Figure
+\begin{textblock*}{8.2cm}(4.4cm, 1.9cm)
+\flushright
+\includegraphics<1>[width=.6\textwidth]{Limites_H_1}
+\includegraphics<2->[width=.6\textwidth]{Limites_H_2}
+\end{textblock*}
+\begin{textblock*}{6cm}(6.6cm, 4.5cm)
+\centering
+\hspace{1cm}\tiny{Vue de côté de la réalisation de la tâche}
+\end{textblock*}
+
+%\begin{textblock*}{8cm}(6.75cm, 4cm)
+%\centering
+%\includegraphics[width=0.5\textwidth]{Chapitre4_Modelisation_Geometrique_mbot}
+%\end{textblock*}
+%\begin{textblock*}{8cm}(6.75cm, 6.5cm)
+%\centering
+%\tiny{Vue de côté de la réalisation de la tâche}
+%\end{textblock*}
+\only<3>{
+\begin{textblock*}{5cm}(7.6cm, 5.75cm)
+\flushright
+\includegraphics[width=\textwidth]{Contraintes_Geometriques_p-bot}
+\end{textblock*}
+\begin{textblock*}{5cm}(7.6cm, 9cm)
+\centering
+\tiny{Vue de dessus du p-bot en co-manipulation}
+\end{textblock*}
+}
+
+\end{frame}
+
+%diap
+%\begin{frame}{Structure du m-bot}
+%\begin{tabular}{|c|c|c|}
+%\hline 
+% Solide & Longueur & mm \\ 
+%\hline 
+% $W_d$/$W_g$	&	$r$   & 35   \\ 
+% $E$			&	$v$   & 350  \\ 
+% $E$			&	$h$   & 307  \\ 
+% $S_1$			&	$l_1$ & 60   \\
+% $S_2$			&	$l_2$ & 145  \\
+% $S_3$			&	$l_3$ & 95  \\
+% $S_4$			&	$l_4$ & 69   \\
+%\hline 
+%\end{tabular} 
+%
+%% Figure
+%\begin{textblock*}{6cm}(6.75cm, 2.25cm)
+%\centering
+%\includegraphics[width=0.5\textwidth]{Chapitre4_Stabilite_Statique_Segway}
+%\end{textblock*}
+%\begin{textblock*}{6cm}(6.75cm, 3.5cm)
+%\centering
+%\tiny{Vue de côté de la réalisation de la tâche}
+%\end{textblock*}
+%
+%\begin{textblock*}{6cm}(6.75cm, 2.25cm)
+%\centering
+%\includegraphics[width=0.5\textwidth]{Chapitre4_Tache_mbot_Initiale_Dynamique}
+%\end{textblock*}
+%\begin{textblock*}{6cm}(6.75cm, 3.5cm)
+%\centering
+%\tiny{Vue de côté de la réalisation de la tâche}
+%\end{textblock*}
+%
+%\begin{textblock*}{6cm}(6.75cm, 2.25cm)
+%\centering
+%\includegraphics[width=0.5\textwidth]{Chapitre4_Tache_mbot_Initiale_Statique}
+%\end{textblock*}
+%\begin{textblock*}{6cm}(6.75cm, 3.5cm)
+%\centering
+%\tiny{Vue de côté de la réalisation de la tâche}
+%\end{textblock*}
+%
+%\begin{textblock*}{6cm}(6.75cm, 2.25cm)
+%\centering
+%\includegraphics[width=0.5\textwidth]{Chapitre4_Stabilite_Statique_Segway_Caisse_Proche}
+%\end{textblock*}
+%\begin{textblock*}{6cm}(6.75cm, 3.5cm)
+%\centering
+%\tiny{Vue de côté de la réalisation de la tâche}
+%\end{textblock*}
+%%
+%\end{frame}
+
+%diap
+\begin{frame}{Réalisation de la tâche en m-bot}
+\begin{figure}[h]
+\centering
+\includegraphics<1>[width=\linewidth]{Chapitre4_Tache_mbot_1_Initiale_b}
+\includegraphics<2>[width=\linewidth]{Chapitre4_Tache_mbot_3_Accroche_b}
+\includegraphics<3>[width=\linewidth]{Chapitre4_Tache_mbot_4_Levage_b}
+\includegraphics<4>[width=\linewidth]{Chapitre4_Tache_mbot_5_Mouvement_b}
+\includegraphics<5>[width=\linewidth]{Chapitre4_Tache_mbot_6_Depot_b}
+\end{figure}
+
+\only<1>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 0 :} Position initiale du m-bot face à la caisse}
+\end{textblock*}
+}
+
+\only<2>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 1 :} Préhension de la caisse par l'outil de manipulation}
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 2 :} Levage de la caisse}
+\end{textblock*}
+}
+
+\only<4>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 3 :} Locomotion vers le rack}
+\end{textblock*}
+}
+
+\only<5>{
+\begin{textblock*}{10cm}(2cm, 7.5cm)
+\flushleft
+\small{\textbf{Étape 4 :} Dépose de la caisse sur une étagère du rack}
+\end{textblock*}
+}
+\end{frame}
+
+%diap
+\begin{frame}{Réalisation de la tâche en p-bot}
+\begin{figure}[h]
+\centering
+\includegraphics<1>[width=0.95\linewidth]{Chapitre4_Tache_pbot_1_Initiale_b}
+\includegraphics<2>[width=0.95\linewidth]{Chapitre4_Tache_pbot_3_Accroche_b}
+\includegraphics<3>[width=0.95\linewidth]{Chapitre4_Tache_pbot_4_Levage_b}
+\includegraphics<4>[width=0.95\linewidth]{Chapitre4_Tache_pbot_5_Locomotion_b}
+\includegraphics<5>[width=0.95\linewidth]{Chapitre4_Tache_pbot_6_Preparation_b}
+\includegraphics<6>[width=0.95\linewidth]{Chapitre4_Tache_pbot_7_Depot_b}
+\end{figure}
+
+\only<1>{
+\begin{textblock*}{8cm}(0.4cm, 1.75cm)
+\flushleft
+\small{\textbf{Étape 1 :}\\ Position initiale des deux m-bots}
+\end{textblock*}
+}
+
+\only<2>{
+\begin{textblock*}{8cm}(0.4cm, 1.75cm)
+\flushleft
+\small{\textbf{Étape 2 :}\\ Préhension de la caisse}
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{8cm}(0.4cm, 1.75cm)
+\flushleft
+\small{\textbf{Étape 3 :}\\ Levage de la caisse}
+\end{textblock*}
+}
+
+\only<4>{
+\begin{textblock*}{8cm}(0.4cm, 1.75cm)
+\flushleft
+\small{\textbf{Étape 4 :}\\ Locomotion vers le rack}
+\end{textblock*}
+}
+
+\only<5>{
+\begin{textblock*}{8cm}(0.4cm, 1.75cm)
+\flushleft
+\small{\textbf{Étape 5 :}\\ Reconfiguration pour la dépose}
+\end{textblock*}
+}
+
+\only<6>{
+\begin{textblock*}{8cm}(0.4cm, 1.75cm)
+\flushleft
+\small{\textbf{Étape 6 :}\\ Dépose de la caisse sur une étagère du rack}
+\end{textblock*}
+}
+\end{frame}
+
+%-----------------------------------------------------
+%------------------subsection------------------------
+\subsection{Lois de commande}
+%------------------------------------------------------
+%diap
+\begin{frame}{Objectif 1 : locomotion du m-bot à 3 contacts au sol}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{7cm}(0.2cm, 2.1cm)
+- Partie \textbf{locomotion} :\\
+\hspace{0.25cm}$\Rightarrow$ Commande cinématique (unicycle)\\
+- Partie \textbf{manipulation} :\\
+\hspace{0.25cm}$\Rightarrow$ Commande en position (PID)\\
+\hspace{2cm}$\Gamma = K_p.\varepsilon + K_i.\int{\varepsilon} + K_d.\dot{\varepsilon}$
+\end{textblock*}
+}
+
+\only<2->{
+\begin{textblock*}{7cm}(0.2cm, 4.5cm)
+\textbf{Validation de la loi de commande :}
+\end{textblock*}
+}
+
+\begin{textblock*}{8cm}(2.4cm, 6cm)
+\centering
+\includegraphics<2>[width=\textwidth]{Chapitre4_Phase_Approche_mbot_Limites_Init}
+\href{run:./Figures/m-bot.avi}{\includegraphics<3->[width=\textwidth]{Chapitre4_Phase_Approche_mbot_Limites_Fin}}
+\end{textblock*}
+
+\only<2>{
+\begin{textblock*}{12cm}(2.75cm, 8cm)
+\flushleft
+\scriptsize{Validation de la phase d'approche en m-bot : position initiale}
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{12cm}(2.75cm, 8cm)
+\flushleft
+\scriptsize{Validation de la phase d'approche en m-bot : position finale}
+\end{textblock*}
+}
+
+% Figure
+\begin{textblock*}{5.4cm}(7.4cm, 1.5cm)
+\flushright
+\includegraphics[width=\textwidth]{Chapitre4_Schema_Commande_PID}
+\end{textblock*}
+\begin{textblock*}{5.4cm}(7.4cm, 4.25cm)
+\centering
+\tiny{Schéma-bloc de la commande en position articulaire}
+\end{textblock*}
+
+%\tikzset{
+%block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+%tmp/.style  = {coordinate}, 
+%sum/.style= {draw, fill=white, circle, node distance=1cm},
+%input/.style = {coordinate},
+%output/.style= {coordinate},
+%pinstyle/.style = {pin edge={to-,thin,black}
+%}
+%}
+%
+%\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+%    \node [input, name=rinput] (rinput) {};
+%    \node [sum, right of=rinput] (sum1) {};
+%    \node [block, right of=sum1] (controller) {$k_{p\beta}$};
+%    \node [block, above of=controller,node distance=1.3cm] (up){$\frac{k_{i\beta}}{s}$};
+%    \node [block, below of=controller,node distance=1.3cm] (rate) {$sk_{d\beta}$};
+%    \node [sum, right of=controller,node distance=2cm] (sum2) {};
+%    \node [block, above = 2cm of sum2](extra){$\frac{1}{\alpha_{\beta2}}$};  %
+%    \node [block, right of=sum2,node distance=2cm] (system) 
+%{$\frac{a_{\beta 2}}{s+a_{\beta 1}}$};
+%    \node [output, right of=system, node distance=2cm] (output) {};
+%    \node [tmp, below of=controller] (tmp1){$H(s)$};
+%    \draw [->] (rinput) -- node{$R(s)$} (sum1);
+%    \draw [->] (sum1) --node[name=z,anchor=north]{$E(s)$} (controller);
+%    \draw [->] (controller) -- (sum2);
+%    \draw [->] (sum2) -- node{$U(s)$} (system);
+%    \draw [->] (system) -- node [name=y] {$Y(s)$}(output);
+%    \draw [->] (z) |- (rate);
+%    \draw [->] (rate) -| (sum2);
+%    \draw [->] (z) |- (up);
+%    \draw [->] (up) -| (sum2);
+%    \draw [->] (y) |- (tmp1)-| node[pos=0.99] {$-$} (sum1);
+%    \draw [->] (extra)--(sum2);
+%    \draw [->] ($(0,1.5cm)+(extra)$)node[above]{$d_{\beta 2}$} -- (extra);
+%\end{tikzpicture}
+
+\end{frame}
+
+%diap
+%\begin{frame}{} %{Loi de commande hybride force-position}
+%Modèle statique $\Rightarrow \Gamma = J_H^T.F$
+%$\left\{
+%  \begin{array}{lclr}
+%F_1 	&=& S.CP&\\
+%F_2 	&=& S'.CF\\
+%  \end{array}
+%\right.$
+%- CP: loi de commande en position.\\
+%- CF: loi de commande en effort.\\
+%
+%$\varepsilon_X = X_H^d - X_H$
+%
+%$CP = K_d.\dot{\varepsilon}_X + K_p.\varepsilon_X$\\
+%$CF = F_H^d + K_i\int\varepsilon_F$\\
+%
+%% Figure
+%\begin{textblock*}{6cm}(6.75cm, 2.25cm)
+%\flushright
+%\includegraphics[width=\textwidth]{Chapitre4_Schema_Commande_HFP}
+%\end{textblock*}
+%\begin{textblock*}{6cm}(6.75cm, 3.5cm)
+%\centering
+%\tiny{Schéma block de la commande hybride force-position}
+%\end{textblock*}
+%
+%\end{frame}
+
+%-----------------------------------------------------
+%------------------subsection------------------------
+%\subsection{Validation des lois de commande}
+%------------------------------------------------------
+%diap
+%\begin{frame}{Méthode de simulation}
+%\begin{block}{Paramètres inertiels des pièces du m-bot}
+%\begin{tabular}{|c|c|}
+%\hline 
+% Solide & Masse (kg) \\ 
+%\hline 
+% $W_d$/$W_g$	& 0.15   \\ 
+% $E$			& 2.00  \\ 
+% $S_1$			& 0.10   \\
+% $S_2$			& 0.15  \\
+% $S_3$			& 0.15  \\
+% $S_4$			& 0.12   \\
+%\hline 
+%\end{tabular} 
+%\end{block}
+%
+%\end{frame}
+
+%diap
+\begin{frame}{Objectif 2 : levage de la caisse en co-manipulation} %{Simulation de la phase d'approche en m-bot}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\begin{textblock*}{7cm}(0.2cm, 2.1cm)
+- Partie locomotion :\\
+\hspace{0.25cm}$\Rightarrow$ Roues bloquées\\
+- Partie manipulation :\\
+\hspace{0.25cm}$\Rightarrow$ Loi de commande hybride force-position.\\
+Se basant sur le modèle statique $\Gamma = J_H^T.F$ :\\
+\hspace{2cm}$F = F_1 + F_2 = S.CP + S'CF$\\
+avec : \\
+$S$ et $S'$ : matrices de sélection\\
+$CP$ : loi de commande en position (PID)\\
+$CF$ : loi de commande en effort ($CF = F_H^d + K_i\int\varepsilon_F$)\\
+\end{textblock*}
+}
+
+\only<2->{
+\begin{textblock*}{7cm}(0.2cm, 5.75cm)
+\textbf{Validation\\ de la loi de commande :}
+\end{textblock*}
+}
+%\begin{textblock*}{7cm}(0.2cm, 1.9cm)
+%\begin{block}{Stabilité du m-bot à 3 contacts au sol}
+%Maximiser la marge de stabilité
+%\end{block}
+%\end{textblock*}
+%
+%\begin{textblock*}{7cm}(0.2cm, 3cm)
+%\begin{block}{Condition initiale}
+%- 
+%\end{block}
+%\end{textblock*}
+%
+%\only<2>{
+%\begin{textblock*}{7cm}(0.2cm, 4cm)
+%\begin{block}{Condition finale}
+%- 
+%\end{block}
+%\end{textblock*}
+%}
+%}
+
+% Figure
+\begin{textblock*}{5.4cm}(7.4cm, 1.5cm)
+\flushright
+\includegraphics[width=\textwidth]{Chapitre4_Schema_Commande_HFP}
+\end{textblock*}
+\begin{textblock*}{5.4cm}(7.4cm, 4.25cm)
+\centering
+\tiny{Schéma-bloc de la commande hybride force-position}
+\end{textblock*}
+
+
+\begin{textblock*}{7cm}(5cm, 6cm)
+\centering
+\includegraphics<2>[width=\textwidth]{Chapitre4_Phase_Levage_pbot_Limites_Init}
+\href{run:./Figures/p-bot.avi}{\includegraphics<3>[width=\textwidth]{Chapitre4_Phase_Levage_pbot_Limites_Fin}}
+\end{textblock*}
+
+
+
+
+\only<2>{
+\begin{textblock*}{8cm}(5cm, 8.5cm)
+\flushleft
+\scriptsize{Validation de la phase de levage en p-bot : position initiale}
+\end{textblock*}
+}
+
+\only<3>{
+\begin{textblock*}{8cm}(5cm, 8.5cm)
+\flushleft
+\scriptsize{Validation de la phase de levage en p-bot : position finale}
+\end{textblock*}
+}
+
+\end{frame}
+
+%diap
+%\begin{frame}{Simulation de la phase de levage en p-bot}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\scriptsize
+%\begin{textblock*}{6cm}(0.2cm, 2cm)
+%\begin{block}{Condition initiale}
+%- 
+%\end{block}
+%\end{textblock*}
+%
+%\only<2>{
+%\begin{textblock*}{6cm}(0.2cm, 4cm)
+%\begin{block}{Condition finale}
+%- 
+%\end{block}
+%\end{textblock*}
+%}
+%}
+%
+%% Figure
+%\begin{textblock*}{8cm}(2.4cm, 5.5cm)
+%\centering
+%\includegraphics<1>[width=\textwidth]{Chapitre4_Phase_Levage_pbot_Limites_Init}
+%\includegraphics<2>[width=\textwidth]{Chapitre4_Phase_Levage_pbot_Limites_Fin}
+%\end{textblock*}
+%
+%\only<1>{
+%\begin{textblock*}{12cm}(.4cm, 9cm)
+%\centering
+%\tiny{Position initiale}
+%\end{textblock*}
+%}
+%
+%\only<2>{
+%\begin{textblock*}{12cm}(.4cm, 9cm)
+%\centering
+%\tiny{Position finale}
+%\end{textblock*}
+%}
+%
+%\end{frame}
+
+%-----------------------------------------------------
+\section{Conclusions et perspectives}
+\begin{frame}
+\small{\tableofcontents[currentsection,hideothersubsections]}
+\end{frame}
+%------------------subsection------------------------
+\subsection{Conclusions}
+%------------------------------------------------------
+%diap
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\normalsize %small
+\begin{textblock*}{12cm}(0.4cm, 1.9cm)
+- Étude de l’\textbf{\textcolor{blue}{état de l’art}} des manipulateurs mobiles coopératifs\\
+\end{textblock*}
+
+\begin{textblock*}{7cm}(0.4cm, 3.5cm)
+\justifying
+\only<2->{
+- Présentation d'un \textbf{\textcolor{blue}{système robotique coopératif modulaire}} permettant la réalisation de scénarios dans le contexte de l'industrie 4.0\\
+}
+
+\only<3->{
+\vspace{2cm}
+- \textbf{\textcolor{blue}{Réalisation des scénarios}} industriels et de service à l’aide du système robotique\\
+}
+
+\end{textblock*}
+%Figures
+\begin{textblock*}{4.4cm}(7.5cm, 2.5cm)
+\centering
+\includegraphics<2->[width=0.85\textwidth]{Chapitre2_Description_Systeme}
+\end{textblock*}
+
+\begin{textblock*}{4.4cm}(7.5cm, 5.75cm)
+\centering
+\includegraphics<3->[width=0.65\textwidth]{Devracage_4}
+\end{textblock*}
+
+}
+\end{frame}
+
+
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\normalsize %small
+\begin{textblock*}{7cm}(0.4cm, 1.9cm)
+- \textcolor{blue}{\textbf{Modélisation}} de la liaison non holonome \textbf{roue-sol} comme un ensemble de liaisons cinématiques\\
+
+\vspace{0.75cm}
+\only<2->{
+- \textbf{\textcolor{blue}{Analyse structurale}} des manipulateurs mobiles en tant que \only<3->{\textcolor{blue}{\textbf{m-bot}}} \only<4->{ou \textcolor{blue}{\textbf{p-bot}}}
+}
+
+\vspace{0.75cm}
+\only<5->{
+- Proposition d’une \textbf{\textcolor{blue}{démarche générique}} de synthèse structurale prenant en compte des contraintes sur les paramètres structuraux\\
+}
+
+\vspace{0.25cm}
+\only<6->{
+- \textcolor{blue}{\textbf{Énumération exhaustive}} des 55 architectures cinématiques de connectivité $4 \leq S_m \leq 6$ et non redondantes
+}
+\end{textblock*}
+}
+
+% Figures
+\begin{textblock*}{4.4cm}(7.5cm, 1.5cm)
+\centering
+\includegraphics[width=\textwidth]{Chapitre2_Roues_Rotations}
+\end{textblock*}
+
+\begin{textblock*}{4.4cm}(7.5cm, 3.25cm)
+\centering
+\includegraphics<3->[width=0.25\textwidth]{Graphe_de_Liaison_m-bot_2}
+\includegraphics<4->[width=0.25\textwidth]{Graphe_de_Liaison_p-bot_Connexion_5}
+\end{textblock*}
+
+
+%\begin{textblock*}{4.4cm}(7.5cm, 3.25cm)
+%\flushright
+%\includegraphics<4->[width=0.3\textwidth]{Graphe_de_Liaison_p-bot_Connexion_5}
+%\end{textblock*}
+
+
+\begin{textblock*}{4.4cm}(7.5cm, 6cm)
+\centering
+\includegraphics<5->[width=\linewidth]{Methode_Synthese_Structurale_4}
+\end{textblock*}
+
+
+\end{frame}
+
+
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\normalsize %small
+\begin{textblock*}{7cm}(0.4cm, 1.9cm)
+- Synthèse de \textcolor{blue}{\textbf{trois cinématiques innovantes}} de m-bots pouvant travailler en coopération sur une tâche\\
+
+\vspace{1.5cm}
+\only<2->{
+- \textcolor{blue}{\textbf{Modélisation}} des manipulateurs mobiles et \textcolor{blue}{\textbf{synthèse dimensionnelle}} châssis + bras\\
+}
+
+\vspace{0.75cm}
+\only<3->{
+- \textcolor{blue}{\textbf{Commande}} des manipulateurs mobiles en modes \only<4->{\textcolor{blue}{\textbf{m-bot}}} \only<5->{et \textcolor{blue}{\textbf{p-bot}}}
+}
+\end{textblock*}
+}
+
+\begin{textblock*}{4.4cm}(7.5cm, 1.5cm)
+\centering
+\includegraphics[width=1.2\textwidth]{Solutions}
+\end{textblock*}
+
+\begin{textblock*}{4.4cm}(7.5cm, 4cm)
+\centering
+\includegraphics<2->[width=0.75\textwidth]{Representation_Cinematique_m-bot_2}
+\end{textblock*}
+
+\begin{textblock*}{4.5cm}(1cm, 7.65cm)
+\centering
+\includegraphics<4->[width=1.25\textwidth]{Chapitre4_Phase_Approche_mbot_Limites_Fin}
+\end{textblock*}
+
+\begin{textblock*}{5cm}(7cm, 7cm)
+\centering
+\includegraphics<5->[width=\textwidth]{Chapitre4_Phase_Levage_pbot_Limites_Fin}
+\end{textblock*}
+
+
+
+\end{frame}
+
+%------------------subsection------------------------
+\subsection{Production scientifique}
+%------------------------------------------------------
+%diap
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize %mall
+\begin{textblock*}{12cm}(0.4cm, 1.9cm)
+- \textbf{Brevet} : \\
+\textit{Conception et Commande Coopérative de Manipulateur Mobiles Modulaires ($C^3M^3$)}\\
+Date de publication : 11/12/2018\\
+
+\vspace{0.5cm}
+- \textbf{Conférences internationales} :\\
+\hspace{0.5cm} - \textit{MTM \& Robotics 2016}\\
+\hspace{0.75cm} \textit{A Method for Structural Synthesis of Cooperative Mobile Manipulators}\\
+\hspace{0.75cm} 27 Octobre 2016 \\
+
+\vspace{0.25cm}
+\hspace{0.5cm} - \textit{MCG 2016}\\
+\hspace{0.75cm} \textit{Modeling and Control of Mobile Manipulators for Cooperative Tasks}\\
+\hspace{0.75cm} 05 Octobre 2016 \\
+
+\vspace{0.25cm}
+\hspace{0.5cm} - \textit{TrC-IFToMM 2015}\\
+\hspace{0.75cm} \textit{Autonomous Collaborative Mobile Manipulators: State of the Art}\\
+\hspace{0.75cm} 16 Juin 2015
+
+\vspace{0.5cm}
+- \textbf{Publications en cours} :\\
+\hspace{0.5cm} - Conférence internationale : IFTOMM 2019\\
+\hspace{0.5cm} - Revue : Machines and Mechanism Theory
+\end{textblock*}
+}
+\end{frame}
+
+%-----------------------------------------------------
+%------------------subsection------------------------
+\subsection{Perspectives}
+%------------------------------------------------------
+%diap
+\begin{frame}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\normalsize %small
+\begin{textblock*}{12cm}(0.4cm, 1.9cm)
+\vspace{0.25cm}
+- \textcolor{blue}{\textbf{Généraliser la méthode}} de synthèse structurale à d'autres applications, comme le Kitting, polissage robotisé, ...
+
+\vspace{0.25cm}
+- Opérateur humain \textcolor{blue}{\textbf{collaborant}} avec un p-bot
+
+\vspace{0.25cm}
+- \textcolor{blue}{\textbf{Extension de la commande}} quasi-statique à une commande robuste dynamique
+
+\vspace{0.25cm}
+- Supervision de la commande à l'\textcolor{blue}{\textbf{échelle du p-bot}}
+
+\vspace{0.25cm}
+- Optimiser la précision des mouvements en ajoutant des \textcolor{blue}{\textbf{contraintes d'équilibre statique et dynamique}}
+
+\vspace{0.25cm}
+- Étude des \textcolor{blue}{\textbf{singularités}} et utiliser les \textcolor{blue}{\textbf{redondances}} fonctionnelles pour les éviter
+\end{textblock*}
+}
+\end{frame}
+
+{\setbeamertemplate{headline}{
+\leavevmode
+}
+\begin{frame}
+\begin{textblock*}{6cm}(0.2cm, 0.2cm)
+\justifying
+\tiny{\textbf{Remerciements :}\\
+Ce travail a été financé par le programme «  investissement d'avenir  » géré par l'Agence Nationale de la Recherche (ANR), la commission européenne (Bourses FEDER en Auvergne) et la région Auvergne dans le projet LabEx ImobS3 (ANR-10-LABX-16-01)}
+\end{textblock*}
+
+\begin{textblock*}{6.25cm}(6.25cm,0.4cm)
+\includegraphics[width=\textwidth]{Financeurs}
+\end{textblock*}
+\hspace{0.9cm}\Huge{Merci pour votre attention}
+\end{frame}}
+
+\appendix
+\section*{Annexes}
+%\setbeamertemplate{headline}{
+%\insertsectionnavigationhorizontal{.5\textwidth}{\hskip0pt plus1filll}{}
+%}
+\frame{\tableofcontents}
+
+\subsection{Utilisations possibles des manipulateurs mobiles coopératifs}
+
+
+%\section{Annexes}
+
+%\setbeamertemplate{section in toc}[sections numbered roman]
+%\begin{frame}{Annexes}
+%\tableofcontents[hidesubsections]
+%\end{frame}
+
+%\vspace*{.1cm}
+%\hspace{.5cm} \hyperlink{Annexe_Utilisation}{Utilisations possibles des manipulateurs mobiles coopératifs}
+%
+%\vspace*{.1cm}
+%\hspace{.5cm} \hyperlink{Annexe_Locomotion}{Locomotion en mode 2 roues}
+
+%\section{Utilisations possibles des manipulateurs mobiles coopératifs}
+%\label{Annexe_Utilisation}
+%diap
+\begin{frame}{Manipulation en bord de ligne}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize 
+\only<2->{
+\begin{textblock*}{3.7cm}(0.2cm, 1.9cm) % {block width}
+ \begin{block}{Mode m-bot}
+  - \textcolor{cyan}{m-bot$_1$} : manipulation des petites caisses\\
+  - Deux bras opérationnels\\
+  - Outil de manipulation\\
+ \end{block}
+\end{textblock*}
+}
+
+\only<3->{
+\begin{textblock*}{12.4cm}(0.2cm, 6.75cm) % {block width}
+ \begin{exampleblock}{Mode p-bot en co-manipulation de la charge}
+  - \textcolor{vert}{m-bot$_2$} et \textcolor{orange}{m-bot$_3$} en co-manipulation des grandes caisses\\
+  - Possibilité de manipulation des petites caisses par un seul bras opérationnel\\
+  - Capacité de charge $\nearrow$, stabilité $\nearrow$
+ \end{exampleblock}
+\end{textblock*}
+}
+}
+
+% Figure
+\begin{textblock*}{8.5cm}(4.2cm, 2.1cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Manipulation_en_Bord_de_Ligne_1}
+\includegraphics<2>[width=\textwidth]{Manipulation_en_Bord_de_Ligne_2}
+\includegraphics<3>[width=\textwidth]{Manipulation_en_Bord_de_Ligne_3}
+\end{textblock*}
+
+\end{frame}
+
+%diap
+\begin{frame}{Tâche de perçage}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize 
+\only<2->{
+\begin{textblock*}{3.7cm}(0.2cm, 1.9cm) % {block width}
+ \begin{block}{Mode m-bot}
+  - \textcolor{cyan}{m-bot$_1$} : manipulation des tôles \textbf{A}\\
+  - Deux bras opérationnels\\
+  - Outil de manipulation\\
+ \end{block}
+\end{textblock*}
+}
+
+\only<3->{
+\begin{textblock*}{12.4cm}(0.2cm, 6.75cm) % {block width}
+ \begin{exampleblock}{Mode p-bot en co-manipulation de la charge}
+  - \textcolor{vert}{m-bot$_2$} et \textcolor{orange}{m-bot$_3$} en co-manipulation des tôles \textbf{B}\\
+  - Capacité de charge $\nearrow$, stabilité $\nearrow$
+ \end{exampleblock}
+\end{textblock*}
+}
+}
+
+% Figure
+\begin{textblock*}{8.5cm}(4.2cm, 2.1cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Percage_Poste_Fixe_1}
+\includegraphics<2>[width=\textwidth]{Percage_Poste_Fixe_2}
+\includegraphics<3>[width=\textwidth]{Percage_Poste_Fixe_3}
+\end{textblock*}
+
+
+\end{frame}
+
+%diap
+\begin{frame}{Tâche de polissage}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize 
+\only<2->{
+\begin{textblock*}{3.7cm}(0.2cm, 1.9cm) % {block width}
+ \begin{block}{Mode m-bot : manipulation}
+  - \textcolor{cyan}{m-bot$_1$} : manipulation des pièces \textbf{A}\\
+  - Deux bras opérationnels\\
+  - Outils de manipulation
+ \end{block}
+\end{textblock*}
+}
+
+\only<3->{
+\begin{textblock*}{3.7cm}(0.2cm, 3.9cm) % {block width}
+\begin{block}{Mode m-bot : polissage}
+  - \textcolor{vert}{m-bot$_i$} : polir les tôles \textbf{A}\\
+  - Outil de ponçage\\
+  \only<5->{
+  - \textcolor{brown}{m-bot$_{ii}$} : polir les tôles \textbf{B}\\
+  }
+ \end{block}
+\end{textblock*}
+}
+
+\only<4->{
+\begin{textblock*}{12.4cm}(0.2cm, 6cm) % {block width}
+ \begin{exampleblock}{Mode p-bot en co-manipulation de la charge}
+  - \textcolor{vert}{m-bot$_2$} et \textcolor{orange}{m-bot$_3$} : co-manipulation des pièces \textbf{B}\\
+  - Capacité de charge $\nearrow$, stabilité $\nearrow$ 
+ \end{exampleblock}
+\end{textblock*}
+}
+
+\only<6->{
+\begin{textblock*}{12.4cm}(0.2cm, 7.5cm) % {block width}
+ \begin{alertblock}{Mode p-bot en connexion}
+  - Le \textcolor{teal}{m-bot$_{iii}$} se connecte à \textcolor{teal}{m-bot$_{iv}$} pour la manipulation des grands outils\\
+  - Capacité de charge $\nearrow$, stabilité $\nearrow$, rigidité $\nearrow$
+ \end{alertblock}
+\end{textblock*}
+}
+
+}
+
+% Figure
+\begin{textblock*}{8.5cm}(4.2cm, 2.1cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Poncage_Poste_Mobile_1}
+\includegraphics<2>[width=\textwidth]{Poncage_Poste_Mobile_2}
+\includegraphics<3>[width=\textwidth]{Poncage_Poste_Mobile_3}
+\includegraphics<4>[width=\textwidth]{Poncage_Poste_Mobile_4}
+\includegraphics<5>[width=\textwidth]{Poncage_Poste_Mobile_5}
+\includegraphics<6>[width=\textwidth]{Poncage_Poste_Mobile_6}
+\end{textblock*}
+\end{frame}
+
+%diap
+\begin{frame}{Tâche de perçage et de polissage en génie civil}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\scriptsize
+\only<2->{ 
+\begin{textblock*}{3.7cm}(0.2cm, 1.9cm)
+ \begin{block}{Mode m-bot : ponçage}
+  - \textcolor{cyan}{m-bot$_1$} : ponçage du mur 1\\
+  - Un bras opérationnel\\
+  - Outil de ponçage\\
+ \end{block}
+\end{textblock*}
+}
+
+\only<4->{
+\begin{textblock*}{3.7cm}(0.2cm, 3.9cm) % {block width}
+\begin{block}{Mode m-bot : perçage}
+  - \textcolor{lightgray}{m-bot$_4$} : perçage dans le mur 2\\
+  - Quatre bras opérationnels\\
+  - Outil de perçage\\
+  - Tâche à faible effort $\Rightarrow$ paralléliser la tâche\\
+ \end{block}
+\end{textblock*}
+}
+
+
+\only<3->{
+\begin{textblock*}{12.4cm}(0.2cm, 6.75cm) % {block width}
+ \begin{alertblock}{Mode p-bot en connexion}
+  - Le \textcolor{orange}{m-bot$_{3}$} se connecte à \textcolor{vert}{m-bot$_{2}$} pour la manipulation des grands outils\\
+  - Capacité de charge $\nearrow$, stabilité $\nearrow$, rigidité $\nearrow$, efforts générés $\nearrow$
+ \end{alertblock}
+\end{textblock*}
+}
+}
+
+% Figure
+\begin{textblock*}{8.5cm}(4.2cm, 2.1cm)
+\centering
+\includegraphics<1>[width=\textwidth]{Genie_Civil_1}
+\includegraphics<2>[width=\textwidth]{Genie_Civil_2}
+\includegraphics<3>[width=\textwidth]{Genie_Civil_3}
+\includegraphics<4>[width=\textwidth]{Genie_Civil_4}
+\end{textblock*}
+
+\end{frame}
+
+%\section{Locomotion en mode 2 roues}
+%\label{Annexe_Locomotion}
+\subsection{Robots mobiles à 2 roues}
+\begin{frame}{Exemples de manipulateurs mobiles à 2 roues}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %scriptsize
+}
+%Figures
+\begin{textblock*}{3cm}(8cm, 2.1cm)
+\centering
+\href{run:./Figures/Handle_Vid.mp4}{\includegraphics[width=0.75\textwidth]{Handle}}
+\end{textblock*}
+\begin{textblock*}{3cm}(8cm, 5.125cm)
+\centering
+\tiny{Robot \textit{Handle},\\ \textbf{Boston Dynamics}}
+\end{textblock*}
+\begin{textblock*}{3cm}(4cm, 2.1cm)
+\centering
+\includegraphics[width=0.75\textwidth]{Ninebot}
+\end{textblock*}
+\begin{textblock*}{3cm}(4cm, 5.125cm)
+\centering
+\tiny{Robot \textit{NineBot},\\ \textbf{Segway}}
+\end{textblock*}
+
+%\end{frame}
+
+%\begin{frame}{Éléments de commande}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\small %scriptsize
+%\begin{block}{Capteurs}
+%- Inclinomètre
+%- gyromètres
+%\end{block}
+%
+%\begin{block}{Lois de commande}
+%- Prise en compte les efforts extérieurs
+%- Réaliser des tâches nécessitant une forte sollicitation dynamique
+%\end{block}
+%}
+%\end{frame}
+
+%\begin{frame}{Possibilité d'utilisation des MMs à trois roues}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %scriptsize
+\begin{textblock*}{8cm}(2.4cm, 6cm)
+\begin{block}{Pourquoi pas des parties locomotions à 3 roues}
+- Mode m-bot : \\
+\hspace{0.5cm}$\Rightarrow$ Encombrement\\
+- Mode p-bot : \\
+\hspace{0.5cm}$\Rightarrow$ Hyperstatisme important
+\end{block}
+\end{textblock*}
+
+}
+\end{frame}
+
+%\subsection{Étapes intermédiaires de manœuvre en p-bot}
+%\begin{frame}{} %{Exemples de manipulateurs mobiles à 2 roues}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\small %scriptsize
+%
+%
+%}
+%\end{frame}
+
+%\subsection{Démonstrateur à petite échelle}
+%\begin{frame}{} %{Exemples de manipulateurs mobiles à 2 roues}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\small %scriptsize
+%\begin{block}{Choix des servomoteurs}
+%- \textit{Dynamixel} de la gamme \textbf{XM}:\\
+%\hspace{0.5cm}$\Rightarrow$ Permet la commande en force\\
+%\hspace{0.5cm}$\Rightarrow$ Bon rapport couple/taille\\
+%\end{block}
+%
+%\begin{block}{Plateforme de commande}
+%- Carte \textbf{Robotis Open CM} : \\
+%\hspace{0.5cm}$\Rightarrow$ Connectique adaptée aux moteurs \textit{Dynamixel}\\
+%\hspace{0.5cm}$\Rightarrow$ Entrées et sorties analogiques pour les capteurs
+%\end{block}
+%}
+
+%\end{frame}
+
+\subsection{Plan d'actions}
+\begin{frame}{Plan d'action} %{Exemples de manipulateurs mobiles à 2 roues}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+{\small %scriptsize
+%\begin{block}{Difficulté rencontrés} % {Soutien dans la démarche}
+%- Choix d'une tâche représentative
+%\end{block}
+
+\begin{block}{} % {Plan d'action} % {Soutien dans la démarche}
+- Obtention du soutien de la SATT Grand Centre\\
+- Obtention d'un chèque recherche-innovation de Hub Innovergne\\
+- Réalisation d'un démonstrateur à petite échelle\\
+- Poursuite en post-doc pour une application de décapage-polissage
+\end{block}
+}
+\end{frame}
+
+
+%\subsection{Redondances et singularités}
+%\begin{frame}{} %{Exemples de manipulateurs mobiles à 2 roues}
+%\setbeamertemplate{blocks}[rounded][shadow=false]
+%{\small %scriptsize
+%\begin{block}{Singularités} % {Soutien dans la démarche}
+%- Détecter les configurations singulières\\
+%- Passer les singularités : \\
+%\hspace{0.5cm}$\Rightarrow$ m-bot : passge de l'étape de levage à l'étape de dépose
+%\hspace{0.5cm}$\Rightarrow$ p-bot : passge de l'étape de levage à l'étape de reconfiguration
+%\end{block}
+%
+%\begin{block}{Redondances} % {Soutien dans la démarche}
+%- 
+%\end{block}
+%}
+%\end{frame}
+
+%%%%%%%%%END
+\end{document}
